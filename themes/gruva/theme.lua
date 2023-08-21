@@ -9,6 +9,7 @@ local xrdb = xresources.get_current_theme()
 local gears = require("gears")
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
+local helpers = require("helpers")
 
 -- Inherit default theme
 local theme = dofile(themes_path .. "default/theme.lua")
@@ -185,9 +186,13 @@ theme.layoutlist_shape_selected = gears.shape.rounded_rect
 theme.layoutlist_bg_selected = theme.color3
 
 -- Edge snap
-theme.snap_shape = gears.shape.rounded_rect
 theme.snap_bg = theme.lighter_bg
-theme.snap_border_width = theme.border_width
+if theme.border_radius > 0 then
+  theme.snap_shape = theme.border_width
+else
+  theme.snap_shape = helpers.rrect(dpi(15))
+end
+theme.snap_border_width = dpi(8)
 
 -- Hotkeys popup
 theme.hotkeys_modifiers_fg = theme.color12

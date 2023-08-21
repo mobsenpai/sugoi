@@ -280,29 +280,28 @@ keys.globalkeys = gears.table.join(
 		awful.spawn("rofi -matching normal -show emoji")
 	end, { description = "emoji picker", group = "app" }),
 	--- Clipboard
-	awful.key({ mod, shift }, "c", function()
+	awful.key({ mod }, "v", function()
 		awful.spawn("clipmenu")
 	end, { description = "clipboard", group = "app" }),
+
 	-- Hotkeys list
-	awful.key({ mod }, "F1", function() hotkeys_popup.show_help() end,
-		{ description = "show help", group = "awesome" }),
+	awful.key({ mod }, "F1", function()
+		hotkeys_popup.show_help()
+	end, { description = "show help", group = "awesome" }),
 
 	-- Volume Control with volume keys
 	awful.key({}, "XF86AudioMute",
 		function()
 			helpers.volume_control(0)
-		end,
-		{ description = "(un)mute volume", group = "volume" }),
+		end, { description = "(un)mute volume", group = "volume" }),
 	awful.key({}, "XF86AudioLowerVolume",
 		function()
 			helpers.volume_control(-5)
-		end,
-		{ description = "lower volume", group = "volume" }),
+		end, { description = "lower volume", group = "volume" }),
 	awful.key({}, "XF86AudioRaiseVolume",
 		function()
 			helpers.volume_control(5)
-		end,
-		{ description = "raise volume", group = "volume" }),
+		end, { description = "raise volume", group = "volume" }),
 
 	-- Lockscreen
 	awful.key({ mod, alt }, "l", function()
@@ -387,10 +386,14 @@ keys.clientkeys = gears.table.join(
 
 	-- P for pin: keep on top OR sticky
 	-- On top
-	awful.key({ mod, shift }, "p", function(c) c.ontop = not c.ontop end,
+	awful.key({ mod, shift }, "p", function(c)
+			c.ontop = not c.ontop
+		end,
 		{ description = "toggle keep on top", group = "client" }),
 	-- Sticky
-	awful.key({ mod, ctrl }, "p", function(c) c.sticky = not c.sticky end,
+	awful.key({ mod, ctrl }, "p", function(c)
+			c.sticky = not c.sticky
+		end,
 		{ description = "toggle sticky", group = "client" }),
 
 	-- Minimize

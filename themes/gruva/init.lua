@@ -375,7 +375,8 @@ volume_ratio:adjust_ratio(2, 0.72, 0.28, 0)
 
 volume_adjust.widget = wibox.widget({
 	volume_ratio,
-	shape = helpers.rrect(beautiful.border_radius / 2),
+	-- shape = helpers.rrect(beautiful.border_radius / 2),
+	shape = helpers.rrect(dpi(10)),
 	border_width = beautiful.widget_border_width,
 	border_color = beautiful.widget_border_color,
 	bg = beautiful.background,
