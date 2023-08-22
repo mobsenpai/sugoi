@@ -81,7 +81,7 @@ theme.fg_minimize = theme.foreground .. 55
 theme.border_width = dpi(3)
 theme.border_normal = theme.lighter_bg
 theme.border_focus = theme.color2
-theme.border_radius = dpi(0) --picom should be used for round corners
+theme.border_radius = dpi(15) --picom should be used for round corners
 theme.widget_border_width = dpi(2)
 theme.widget_border_color = theme.color8
 
@@ -147,13 +147,12 @@ theme.screen_margin = dpi(3)
 -- ===================================================================
 theme.wibar_position = "top"
 theme.wibar_height = dpi(25)
+theme.wibar_width = dpi(1366)
 theme.wibar_bg = theme.color0
--- theme.wibar_fg = theme.color7
---theme.wibar_opacity = 0.7
+theme.wibar_fg = theme.color7
 theme.wibar_border_color = theme.color0
 theme.wibar_border_width = dpi(0)
 theme.wibar_border_radius = dpi(0)
--- theme.wibar_width = dpi(565)
 
 -- Systray
 -- ===================================================================
@@ -187,12 +186,8 @@ theme.layoutlist_bg_selected = theme.color3
 
 -- Edge snap
 theme.snap_bg = theme.lighter_bg
-if theme.border_radius > 0 then
-  theme.snap_shape = theme.border_width
-else
-  theme.snap_shape = helpers.rrect(dpi(15))
-end
-theme.snap_border_width = dpi(8)
+theme.snap_shape = helpers.rrect(theme.border_radius)
+theme.snap_border_width = dpi(5)
 
 -- Hotkeys popup
 theme.hotkeys_modifiers_fg = theme.color12

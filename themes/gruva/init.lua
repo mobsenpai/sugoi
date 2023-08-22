@@ -33,12 +33,16 @@ local memory_widget = wibox.widget({
 			widget = wibox.widget.background,
 		},
 		{
-			id = "text",
-			text = "",
-			font = beautiful.icon_font .. "10",
-			widget = wibox.widget.textbox,
+			{
+				id = "text",
+				text = "",
+				font = beautiful.icon_font .. "10",
+				widget = wibox.widget.textbox,
+			},
+			left = dpi(5),
+			right = dpi(5),
+			widget = wibox.container.margin
 		},
-		spacing = dpi(10),
 		layout = wibox.layout.fixed.horizontal,
 	},
 	fg = beautiful.darker_bg,
@@ -46,21 +50,20 @@ local memory_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-local update_interval = 20
+local ram_update_interval = 20
 local ram_script = [[
   sh -c "
   free -m | grep 'Mem:' | awk '{printf \"%d@@%d@\", $7, $2}'
   "]]
 
 -- Periodically get ram info
-awful.widget.watch(ram_script, update_interval, function(widget, stdout)
+awful.widget.watch(ram_script, ram_update_interval, function(widget, stdout)
 	local available = stdout:match("(.*)@@")
 	local total = stdout:match("@@(.*)@")
 	local used = tonumber(total) - tonumber(available)
 	-- weather_widget attach
 	local usage = memory_widget:get_children_by_id("text")[1]
-	memory_widget:emit_signal("widget::redraw_needed")
-	usage:set_text(used .. " MB ")
+	usage:set_text(used .. " MB")
 end)
 
 -- Clock widget
@@ -79,12 +82,16 @@ local clock_widget = wibox.widget({
 			widget = wibox.widget.background,
 		},
 		{
-			id = "text",
-			format = "%a %b %d - %I:%M %p ",
-			font = beautiful.icon_font .. "10",
-			widget = wibox.widget.textclock,
+			{
+				id = "text",
+				format = "%a %b %d - %I:%M %p",
+				font = beautiful.icon_font .. "10",
+				widget = wibox.widget.textclock,
+			},
+			left = dpi(5),
+			right = dpi(5),
+			widget = wibox.container.margin,
 		},
-		spacing = dpi(10),
 		layout = wibox.layout.fixed.horizontal,
 	},
 	fg = "#ffffff",
@@ -108,12 +115,16 @@ local cpu_widget = wibox.widget({
 			widget = wibox.widget.background,
 		},
 		{
-			id = "text",
-			text = "",
-			font = beautiful.icon_font .. "10",
-			widget = wibox.widget.textbox,
+			{
+				id = "text",
+				text = "",
+				font = beautiful.icon_font .. "10",
+				widget = wibox.widget.textbox,
+			},
+			left = dpi(5),
+			right = dpi(5),
+			widget = wibox.container.margin,
 		},
-		spacing = dpi(10),
 		layout = wibox.layout.fixed.horizontal,
 	},
 	fg = beautiful.color3,
@@ -121,28 +132,27 @@ local cpu_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-local update_interval = 5
+local cpu_update_interval = 5
 local cpu_idle_script = [[
   sh -c "
   vmstat 1 2 | tail -1 | awk '{printf \"%d\", $15}'
   "]]
 
 -- Periodically get cpu info
-awful.widget.watch(cpu_idle_script, update_interval, function(widget, stdout)
+awful.widget.watch(cpu_idle_script, cpu_update_interval, function(widget, stdout)
 	local cpu_idle = stdout
 	cpu_idle = string.gsub(cpu_idle, "^%s*(.-)%s*$", "%1")
 	local used = 100 - tonumber(cpu_idle)
 	-- cpu_widget attach
 	local usage = cpu_widget:get_children_by_id("text")[1]
-	cpu_widget:emit_signal("widget::redraw_needed")
-	usage:set_text(used .. "% ")
+	usage:set_text(used .. "%")
 end)
 
 -- Weather widget
 -- =============================================
 local GET_FORECAST_CMD = [[bash -c "curl -s --show-error -X GET '%s'"]]
 
-local current_weather_widget = wibox.widget({
+local weather_widget = wibox.widget({
 	{
 		{
 			{
@@ -156,20 +166,27 @@ local current_weather_widget = wibox.widget({
 			widget = wibox.widget.background,
 		},
 		{
-			id = "description",
-			text = "Mostly cloudy,",
-			font = beautiful.icon_font .. "10",
-			widget = wibox.widget.textbox,
+			{
+				{
+					id = "description",
+					text = "",
+					font = beautiful.icon_font .. "10",
+					widget = wibox.widget.textbox,
+				},
+				nil,
+				{
+					id = "temp_current",
+					markup = "",
+					align = "right",
+					font = beautiful.icon_font .. "10",
+					widget = wibox.widget.textbox,
+				},
+				widget = wibox.layout.align.horizontal,
+			},
+			left = dpi(5),
+			right = dpi(5),
+			widget = wibox.container.margin,
 		},
-		nil,
-		{
-			id = "tempareture_current",
-			markup = "20<sup><span>°</span></sup><span>C </span>",
-			align = "right",
-			font = beautiful.icon_font .. "10",
-			widget = wibox.widget.textbox,
-		},
-		spacing = dpi(10),
 		layout = wibox.layout.fixed.horizontal,
 	},
 	fg = beautiful.color2,
@@ -198,11 +215,11 @@ awful.widget.watch(string.format(GET_FORECAST_CMD, url), 600, function(_, stdout
 	if stderr == "" then
 		local result = json.decode(stdout)
 		-- Current weather setup
-		local description = current_weather_widget:get_children_by_id("description")[1]
-		local temp_current = current_weather_widget:get_children_by_id("tempareture_current")[1]
-		current_weather_widget:emit_signal("widget::redraw_needed")
-		description:set_text(result.current.weather[1].description:gsub("^%l", string.upper) .. ",")
-		temp_current:set_markup(math.floor(result.current.temp) .. "<sup><span>°</span></sup><span>C </span>")
+		local description = weather_widget:get_children_by_id("description")[1]
+		local temp_current = weather_widget:get_children_by_id("temp_current")[1]
+		-- weather_widget:emit_signal("widget::redraw_needed")
+		description:set_text(result.current.weather[1].description:gsub("^%l", string.upper) .. ", ")
+		temp_current:set_markup(math.floor(result.current.temp) .. "<sup><span>°</span></sup><span>C</span>")
 	end
 end)
 
@@ -222,14 +239,18 @@ local playerctl_widget = wibox.widget({
 			widget = wibox.widget.background,
 		},
 		{
-			id = "text",
-			text = "---",
-			font = beautiful.icon_font .. "10",
-			align = "center",
-			forced_width = dpi(100),
-			widget = wibox.widget.textbox,
+			{
+				id = "text",
+				text = "Not Playing",
+				font = beautiful.icon_font .. "10",
+				align = "center",
+				forced_width = dpi(100),
+				widget = wibox.widget.textbox,
+			},
+			left = dpi(10),
+			right = dpi(10),
+			widget = wibox.container.margin,
 		},
-		spacing = dpi(10),
 		layout = wibox.layout.fixed.horizontal,
 	},
 	fg = beautiful.color13,
@@ -238,7 +259,7 @@ local playerctl_widget = wibox.widget({
 })
 
 -- Get playerctl output
-local function emit_info(playerctl_output)
+local function emit_playerctl_info(playerctl_output)
 	local artist = playerctl_output:match('artist_start(.*)title_start')
 	local title = playerctl_output:match('title_start(.*)status_start')
 	-- Use the lower case of status
@@ -247,9 +268,9 @@ local function emit_info(playerctl_output)
 	-- playerctl_widget attach
 	local song = playerctl_widget:get_children_by_id("text")[1]
 	if status == "stopped" then
-		song:set_text("---")
+		song:set_text("Not Playing")
 	else
-		song:set_text(title .. " ")
+		song:set_text(title)
 	end
 end
 
@@ -265,7 +286,7 @@ awful.spawn.easy_async_with_shell("ps x | grep \"playerctl metadata\" | grep -v 
 		-- Emit song info with each line printed
 		awful.spawn.with_line_callback(spotify_script, {
 			stdout = function(line)
-				emit_info(line)
+				emit_playerctl_info(line)
 			end
 		})
 	end)
@@ -276,56 +297,35 @@ awful.spawn.easy_async_with_shell("ps x | grep \"playerctl metadata\" | grep -v 
 local volume_old = -1
 local muted_old = -1
 local function emit_volume_info()
-	-- Get volume info of the currently active sink
-	awful.spawn.easy_async_with_shell('echo -n $(pamixer --get-mute); echo "_$(pamixer --get-volume)"', function(stdout)
-		local bool = string.match(stdout, "(.-)_")
-		local volume = string.match(stdout, "%d+")
-		local muted_int = -1
-		if bool == "true" then
-			muted_int = 1
-		else
-			muted_int = 0
-		end
-		local volume_int = tonumber(volume)
+	awful.spawn.easy_async_with_shell("wpctl get-volume @DEFAULT_AUDIO_SINK@", function(out)
+		local volume = tonumber(string.match(out:match("(%d%.%d+)") * 100, "(%d+)"))
+		local muted = out:match("MUTED")
 
-		-- Only send signal if there was a change
-		-- We need this since we use `pactl subscribe` to detect
-		-- volume events. These are not only triggered when the
-		-- user adjusts the volume through a keybind, but also
-		-- through `pavucontrol` or even without user intervention,
-		-- when a media file starts playing.
-		if volume_int ~= volume_old or muted_int ~= muted_old then
-			awesome.emit_signal("signal::volume", volume_int, muted_int)
-			volume_old = volume_int
-			muted_old = muted_int
+		if volume ~= volume_old or muted ~= muted_old then
+			awesome.emit_signal("signal::volume", volume, muted)
+			volume_old = volume
+			muted_old = muted
 		end
 	end)
 end
 
--- Run once to initialize widgets
-emit_volume_info()
+local function enable()
+	emit_volume_info()
 
--- Sleeps until pactl detects an event (volume up/down/toggle mute)
-local volume_script = [[
-    bash -c "
-    LANG=C pactl subscribe 2> /dev/null | grep --line-buffered \"Event 'change' on sink #\"
-    "]]
+	local subscribe =
+	[[ bash -c "LANG=C pactl subscribe 2> /dev/null | grep --line-buffered \"Event 'change' on sink\"" ]]
 
--- Kill old pactl subscribe processes
-awful.spawn.easy_async({
-	"pkill",
-	"--full",
-	"--uid",
-	os.getenv("USER"),
-	"^pactl subscribe",
-}, function()
-	-- Run emit_volume_info() with each line printed
-	awful.spawn.with_line_callback(volume_script, {
-		stdout = function(line)
-			emit_volume_info()
-		end,
-	})
-end)
+	awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^pactl subscribe" }, function()
+		awful.spawn.with_line_callback(subscribe, {
+			stdout = function()
+				emit_volume_info()
+			end,
+		})
+	end)
+end
+
+-- Initialize
+enable()
 
 local volume_icon = wibox.widget({
 	markup = "<span foreground='" .. beautiful.color4 .. "'><b>󰋋</b></span>",
@@ -375,8 +375,7 @@ volume_ratio:adjust_ratio(2, 0.72, 0.28, 0)
 
 volume_adjust.widget = wibox.widget({
 	volume_ratio,
-	-- shape = helpers.rrect(beautiful.border_radius / 2),
-	shape = helpers.rrect(dpi(10)),
+	shape = helpers.rrect(beautiful.border_radius / 2),
 	border_width = beautiful.widget_border_width,
 	border_color = beautiful.widget_border_color,
 	bg = beautiful.background,
@@ -397,7 +396,7 @@ local hide_volume_adjust = gears.timer({
 awesome.connect_signal("signal::volume", function(vol, muted)
 	volume_bar.value = vol
 
-	if muted == 1 or vol == 0 then
+	if muted or vol == 0 then
 		volume_icon.markup = "<span foreground='" .. beautiful.color4 .. "'><b>󰟎</b></span>"
 	else
 		volume_icon.markup = "<span foreground='" .. beautiful.color4 .. "'><b>󰋋</b></span>"
@@ -453,44 +452,47 @@ awful.screen.connect_for_each_screen(function(s)
 		screen = s,
 		width = beautiful.wibar_width,
 		height = beautiful.wibar_height,
-		shape = helpers.rrect(beautiful.border_radius),
+		shape = helpers.rrect(beautiful.wibar_border_radius),
 	})
 
 	s.mywibox:setup({
 		{
-			layout = wibox.layout.align.horizontal,
-			expand = "none",
 			{
-				spacing = dpi(10),
-				layout = wibox.layout.fixed.horizontal,
 				s.mytaglist,
 				s.mypromptbox,
 				s.mytasklist,
-			},
-			{
+				align = "left",
 				spacing = dpi(10),
 				layout = wibox.layout.fixed.horizontal,
+			},
+			{
 				playerctl_widget,
-			},
-			{
+				align = "middle",
 				spacing = dpi(10),
 				layout = wibox.layout.fixed.horizontal,
-				current_weather_widget,
+			},
+			{
+				weather_widget,
 				memory_widget,
 				cpu_widget,
 				clock_widget,
 				s.systray,
+				align = "right",
+				spacing = dpi(10),
+				layout = wibox.layout.fixed.horizontal,
 			},
+			expand = "none",
+			layout = wibox.layout.align.horizontal,
 		},
 		top = dpi(3),
 		bottom = dpi(3),
 		left = dpi(3),
 		right = dpi(3),
-		layout = wibox.container.margin,
+		widget = wibox.container.margin,
 	})
 
-	-- Place bar at the bottom and add margins
-	awful.placement.top(s.mywibox, { margins = beautiful.screen_margin * 0 }) -- I don't want margin so I added "*0"
+	-- Place bar at the top and add margins
+	awful.placement.top(s.mywibox, { margins = beautiful.screen_margin * 0 }) -- No margin
 end)
 
 -- ░█▀█░█▀█░▀█▀░▀█▀░█▀█░█▀█░█▀▀
@@ -516,7 +518,7 @@ naughty.connect_signal("request::display", function(n)
 		notification = n,
 		base_layout = wibox.widget({
 			spacing = dpi(5),
-			layout = wibox.layout.flex.horizontal
+			layout = wibox.layout.flex.horizontal,
 		}),
 		widget_template = {
 			{
@@ -524,17 +526,17 @@ naughty.connect_signal("request::display", function(n)
 					{
 						font = beautiful.font_name .. "Bold 11",
 						markup = "<span foreground='" .. beautiful.color4 .. "'>" .. " " .. "</span>",
-						widget = wibox.widget.textbox
+						widget = wibox.widget.textbox,
 					},
 					{
 						id = 'text_role',
 						font = beautiful.notification_font,
-						widget = wibox.widget.textbox
+						widget = wibox.widget.textbox,
 					},
 					forced_height = dpi(35),
-					layout = wibox.layout.fixed.horizontal
+					layout = wibox.layout.fixed.horizontal,
 				},
-				widget = wibox.container.place
+				widget = wibox.container.place,
 			},
 			strategy = "min",
 			width = dpi(60),
@@ -550,7 +552,7 @@ naughty.connect_signal("request::display", function(n)
 	naughty.layout.box {
 		notification = n,
 		type = "notification",
-		cursor = "hand2",
+		-- cursor = "hand2",
 		shape = helpers.rrect(beautiful.notification_border_radius),
 		border_width = beautiful.notification_border_width,
 		border_color = beautiful.notification_border_color,
