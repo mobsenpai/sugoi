@@ -217,7 +217,6 @@ awful.widget.watch(string.format(GET_FORECAST_CMD, url), 600, function(_, stdout
 		-- Current weather setup
 		local description = weather_widget:get_children_by_id("description")[1]
 		local temp_current = weather_widget:get_children_by_id("temp_current")[1]
-		-- weather_widget:emit_signal("widget::redraw_needed")
 		description:set_text(result.current.weather[1].description:gsub("^%l", string.upper) .. ", ")
 		temp_current:set_markup(math.floor(result.current.temp) .. "<sup><span>°</span></sup><span>C</span>")
 	end
