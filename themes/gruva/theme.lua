@@ -81,7 +81,7 @@ theme.fg_minimize = theme.foreground .. 55
 theme.border_width = dpi(3)
 theme.border_normal = theme.lighter_bg
 theme.border_focus = theme.color2
-theme.border_radius = dpi(15) --picom should be used for round corners
+theme.border_radius = dpi(15)
 theme.widget_border_width = dpi(2)
 theme.widget_border_color = theme.color8
 
@@ -132,7 +132,6 @@ theme.menu_bg_normal = theme.bg_normal
 theme.menu_fg_normal = theme.fg_normal
 theme.menu_bg_focus = theme.bg_focus
 theme.menu_fg_focus = theme.fg_focus
--- theme.menu_font = theme.font
 theme.menu_border_width = theme.border_width / 2
 theme.menu_border_color = theme.color8
 theme.menu_submenu = ">  "
