@@ -81,7 +81,7 @@ theme.fg_minimize = theme.foreground .. 55
 theme.border_width = dpi(3)
 theme.border_normal = theme.lighter_bg
 theme.border_focus = theme.color2
-theme.border_radius = dpi(15)
+theme.border_radius = dpi(0)
 theme.widget_border_width = dpi(2)
 theme.widget_border_color = theme.color8
 

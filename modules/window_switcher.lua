@@ -143,7 +143,7 @@ local enable = function()
   local scroll_next_key = 5
 
   local window_switcher_box = awful.popup({
-    bg = beautiful.transparent,
+    -- bg = beautiful.transparent,
     visible = false,
     ontop = true,
     placement = awful.placement.centered,

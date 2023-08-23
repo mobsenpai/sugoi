@@ -336,12 +336,13 @@ local volume_icon = wibox.widget({
 
 local volume_adjust = awful.popup({
 	type = "notification",
+	shape = gears.shape.rounded_rect,
 	maximum_width = dpi(50),
 	maximum_height = dpi(300),
 	visible = false,
 	ontop = true,
 	widget = wibox.container.background,
-	bg = beautiful.transparent,
+	-- bg = beautiful.transparent,
 	placement = function(c)
 		awful.placement.right(c, { margins = { right = 10 } })
 	end,
@@ -374,7 +375,7 @@ volume_ratio:adjust_ratio(2, 0.72, 0.28, 0)
 
 volume_adjust.widget = wibox.widget({
 	volume_ratio,
-	shape = helpers.rrect(beautiful.border_radius),
+	shape = gears.shape.rounded_rect,
 	border_width = beautiful.widget_border_width,
 	border_color = beautiful.widget_border_color,
 	bg = beautiful.background,
