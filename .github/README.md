@@ -3,7 +3,7 @@
 <!-- RICE PREVIEW -->
 <div align="center">
    <a href="#--------">
-      <img src="assets/yoru.png" alt="Rice Preview">
+      <img src="https://i.imgur.com/vhlm6uN.png" alt="Rice Preview">
    </a>
 </div>
 
@@ -100,7 +100,7 @@ git clone  https://github.com/MobSenpai/sugoi.git
 
 Necessary fonts:
 
-- **Roboto** - [here](https://fonts.google.com/specimen/Roboto)
+- **JetBrains Mono** - [here](https://www.jetbrains.com/lp/mono/)
 
 > Finally, now you can login with AwesomeWM
 
@@ -114,17 +114,17 @@ Log out from your current desktop session and log in into AwesomeWM
 
 ## :ocean: ‎ <samp>Gallery</samp>
 
-| <b>Modern Top Panel</b>                                                                           |
-| ------------------------------------------------------------------------------------------------- |
-| <a href="#--------"><img src="assets/top_panel.gif" width="500px" alt="bottom panel preview"></a> |
+| <b>Modern Top Panel</b>                                                                                      |
+| ------------------------------------------------------------------------------------------------------------ |
+| <a href="#--------"><img src="https://i.imgur.com/MXVBybd.png" width="500px" alt="bottom panel preview"></a> |
 
-| <b>Naughty Notifications</b>                                                                     |
-| ------------------------------------------------------------------------------------------------ |
-| <a href="#--------"><img src="assets/naughty.gif" width="500px" alt="notifications preview"></a> |
+| <b>Naughty Notifications</b>                                                                                  |
+| ------------------------------------------------------------------------------------------------------------- |
+| <a href="#--------"><img src="https://i.imgur.com/4J5UX59.png" width="500px" alt="notifications preview"></a> |
 
-| <b>Lockscreen with [PAM Integration](https://github.com/RMTT/lua-pam)</b>                                   |
-| ----------------------------------------------------------------------------------------------------------- |
-| <a href="#--------"><img src="assets/lockscreen.gif" width="500px" alt="word clock lockscreen preview"></a> |
+| <b>Lockscreen with [PAM Integration](https://github.com/RMTT/lua-pam)</b>              |
+| -------------------------------------------------------------------------------------- |
+| <a href="#--------"><img src="" width="500px" alt="word clock lockscreen preview"></a> |
 
 ## :scroll: ‎ <samp>License</samp>
 
