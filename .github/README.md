@@ -141,8 +141,6 @@ sugoi is created by <a href="https://github.com/MobSenpai">MobSenpai</a>.
 
 ## :bulb: ‎ <samp>Acknowledgements</samp>
 
-- _Contributors_
-
 - [rxyhn](https://github.com/rxyhn)
 - [JavaCafe01](https://github.com/JavaCafe01)
 - [elenapan](https://github.com/elenapan)
