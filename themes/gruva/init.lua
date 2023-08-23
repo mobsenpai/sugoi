@@ -466,7 +466,7 @@ awful.screen.connect_for_each_screen(function(s)
 			},
 			{
 				playerctl_widget,
-				align = "middle",
+				align = "center",
 				spacing = dpi(10),
 				layout = wibox.layout.fixed.horizontal,
 			},
