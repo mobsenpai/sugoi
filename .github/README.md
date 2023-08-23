@@ -93,7 +93,7 @@ picom-git alacritty rofi pipewire feh playerctl
 > Clone this repository to ~/.config/awesome/
 
 ```sh
-git clone  https://github.com/MobSenpai/sugio.git
+git clone  https://github.com/MobSenpai/sugoi.git
 ```
 
 > Install a few fonts (mainly icon fonts) in order for text and icons to be rendered properly.
