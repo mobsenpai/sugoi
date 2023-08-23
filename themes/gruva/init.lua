@@ -291,7 +291,6 @@ awful.spawn.easy_async_with_shell("ps x | grep \"playerctl metadata\" | grep -v 
 	end)
 
 -- Volume osd
--- needs pamixer installed
 -- =============================================
 local volume_old = -1
 local muted_old = -1
