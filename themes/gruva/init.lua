@@ -49,8 +49,8 @@ local memory_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-awesome.connect_signal("evil::ram", function(used)
-	memory_widget:get_children_by_id("text")[1].markup = tostring(used) .. " MB"
+awesome.connect_signal("evil::ram", function(value, _)
+	memory_widget:get_children_by_id("text")[1].markup = tostring(value) .. " MB"
 end)
 
 -- Clock widget
@@ -168,10 +168,10 @@ local weather_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-awesome.connect_signal("evil::weather", function(result)
-	weather_widget:get_children_by_id("description")[1].markup = result.current.weather[1].description:gsub("^%l",
+awesome.connect_signal("evil::weather", function(value)
+	weather_widget:get_children_by_id("description")[1].markup = value.current.weather[1].description:gsub("^%l",
 		string.upper) .. ", "
-	weather_widget:get_children_by_id("temp_current")[1].markup = math.floor(result.current.temp) ..
+	weather_widget:get_children_by_id("temp_current")[1].markup = math.floor(value.current.temp) ..
 			"<sup><span>°</span></sup><span>C</span>"
 end)
 
@@ -210,8 +210,8 @@ local playerctl_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-awesome.connect_signal("evil::spotify", function(title)
-	playerctl_widget:get_children_by_id("text")[1].markup = title
+awesome.connect_signal("evil::spotify", function(_, value, _)
+	playerctl_widget:get_children_by_id("text")[1].markup = value
 end)
 
 -- Volume osd
@@ -283,10 +283,10 @@ local hide_volume_adjust = gears.timer({
 	end,
 })
 
-awesome.connect_signal("evil::volume", function(vol, muted)
-	volume_bar.value = vol
+awesome.connect_signal("evil::volume", function(value, muted)
+	volume_bar.value = value
 
-	if muted or vol == 0 then
+	if muted or value == 0 then
 		volume_icon.markup = "<span foreground='" .. beautiful.color4 .. "'><b>󰟎</b></span>"
 	else
 		volume_icon.markup = "<span foreground='" .. beautiful.color4 .. "'><b>󰋋</b></span>"
