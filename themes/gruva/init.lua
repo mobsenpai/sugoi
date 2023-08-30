@@ -35,7 +35,6 @@ local memory_widget = wibox.widget({
 		{
 			{
 				id = "text",
-				text = "",
 				font = beautiful.icon_font .. "10",
 				widget = wibox.widget.textbox,
 			},
@@ -50,20 +49,8 @@ local memory_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-local ram_update_interval = 20
-local ram_script = [[
-  sh -c "
-  free -m | grep 'Mem:' | awk '{printf \"%d@@%d@\", $7, $2}'
-  "]]
-
--- Periodically get ram info
-awful.widget.watch(ram_script, ram_update_interval, function(widget, stdout)
-	local available = stdout:match("(.*)@@")
-	local total = stdout:match("@@(.*)@")
-	local used = tonumber(total) - tonumber(available)
-	-- weather_widget attach
-	local usage = memory_widget:get_children_by_id("text")[1]
-	usage:set_text(used .. " MB")
+awesome.connect_signal("evil::ram", function(used)
+	memory_widget:get_children_by_id("text")[1].markup = tostring(used) .. " MB"
 end)
 
 -- Clock widget
@@ -117,7 +104,6 @@ local cpu_widget = wibox.widget({
 		{
 			{
 				id = "text",
-				text = "",
 				font = beautiful.icon_font .. "10",
 				widget = wibox.widget.textbox,
 			},
@@ -132,25 +118,13 @@ local cpu_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-local cpu_update_interval = 5
-local cpu_idle_script = [[
-  sh -c "
-  vmstat 1 2 | tail -1 | awk '{printf \"%d\", $15}'
-  "]]
-
--- Periodically get cpu info
-awful.widget.watch(cpu_idle_script, cpu_update_interval, function(widget, stdout)
-	local cpu_idle = stdout
-	cpu_idle = string.gsub(cpu_idle, "^%s*(.-)%s*$", "%1")
-	local used = 100 - tonumber(cpu_idle)
-	-- cpu_widget attach
-	local usage = cpu_widget:get_children_by_id("text")[1]
-	usage:set_text(used .. "%")
+awesome.connect_signal("evil::cpu", function(value)
+	cpu_widget:get_children_by_id("text")[1].markup = tostring(value) .. "%"
 end)
 
 -- Weather widget
 -- =============================================
-local GET_FORECAST_CMD = [[bash -c "curl -s --show-error -X GET '%s'"]]
+-- local GET_FORECAST_CMD = [[bash -c "curl -s --show-error -X GET '%s'"]]
 
 local weather_widget = wibox.widget({
 	{
@@ -169,14 +143,14 @@ local weather_widget = wibox.widget({
 			{
 				{
 					id = "description",
-					text = "",
+					-- text = "",
 					font = beautiful.icon_font .. "10",
 					widget = wibox.widget.textbox,
 				},
 				nil,
 				{
 					id = "temp_current",
-					markup = "",
+					-- markup = "",
 					align = "right",
 					font = beautiful.icon_font .. "10",
 					widget = wibox.widget.textbox,
@@ -194,32 +168,11 @@ local weather_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-local api_key = user.openweathermap_key
-local coordinates = user.openweathermap_city_id
-local units = user.openweathermap_weather_units
-
-local url = (
-	"https://api.openweathermap.org/data/2.5/onecall"
-	.. "?lat="
-	.. coordinates[1]
-	.. "&lon="
-	.. coordinates[2]
-	.. "&appid="
-	.. api_key
-	.. "&units="
-	.. units
-	.. "&exclude=minutely"
-)
-
-awful.widget.watch(string.format(GET_FORECAST_CMD, url), 600, function(_, stdout, stderr)
-	if stderr == "" then
-		local result = json.decode(stdout)
-		-- Current weather setup
-		local description = weather_widget:get_children_by_id("description")[1]
-		local temp_current = weather_widget:get_children_by_id("temp_current")[1]
-		description:set_text(result.current.weather[1].description:gsub("^%l", string.upper) .. ", ")
-		temp_current:set_markup(math.floor(result.current.temp) .. "<sup><span>°</span></sup><span>C</span>")
-	end
+awesome.connect_signal("evil::weather", function(result)
+	weather_widget:get_children_by_id("description")[1].markup = result.current.weather[1].description:gsub("^%l",
+		string.upper) .. ", "
+	weather_widget:get_children_by_id("temp_current")[1].markup = math.floor(result.current.temp) ..
+			"<sup><span>°</span></sup><span>C</span>"
 end)
 
 -- Playerctl widget
@@ -257,74 +210,12 @@ local playerctl_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
--- Get playerctl output
-local function emit_playerctl_info(playerctl_output)
-	local artist = playerctl_output:match('artist_start(.*)title_start')
-	local title = playerctl_output:match('title_start(.*)status_start')
-	-- Use the lower case of status
-	local status = playerctl_output:match('status_start(.*)'):lower()
-	status = string.gsub(status, '^%s*(.-)%s*$', '%1')
-	-- playerctl_widget attach
-	local song = playerctl_widget:get_children_by_id("text")[1]
-	if status == "stopped" then
-		song:set_text("Not Playing")
-	else
-		song:set_text(title)
-	end
-end
-
--- Sleeps until spotify changes state (pause/play/next/prev)
-local spotify_script = [[
-  sh -c '
-    playerctl metadata --format 'artist_start{{artist}}title_start{{title}}status_start{{status}}' --follow
-  ']]
-
--- Kill old playerctl process
-awful.spawn.easy_async_with_shell("ps x | grep \"playerctl metadata\" | grep -v grep | awk '{print $1}' | xargs kill",
-	function()
-		-- Emit song info with each line printed
-		awful.spawn.with_line_callback(spotify_script, {
-			stdout = function(line)
-				emit_playerctl_info(line)
-			end
-		})
-	end)
+awesome.connect_signal("evil::spotify", function(title)
+	playerctl_widget:get_children_by_id("text")[1].markup = title
+end)
 
 -- Volume osd
 -- =============================================
-local volume_old = -1
-local muted_old = -1
-local function emit_volume_info()
-	awful.spawn.easy_async_with_shell("wpctl get-volume @DEFAULT_AUDIO_SINK@", function(out)
-		local volume = tonumber(string.match(out:match("(%d%.%d+)") * 100, "(%d+)"))
-		local muted = out:match("MUTED")
-
-		if volume ~= volume_old or muted ~= muted_old then
-			awesome.emit_signal("signal::volume", volume, muted)
-			volume_old = volume
-			muted_old = muted
-		end
-	end)
-end
-
-local function enable()
-	emit_volume_info()
-
-	local subscribe =
-	[[ bash -c "LANG=C pactl subscribe 2> /dev/null | grep --line-buffered \"Event 'change' on sink\"" ]]
-
-	awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^pactl subscribe" }, function()
-		awful.spawn.with_line_callback(subscribe, {
-			stdout = function()
-				emit_volume_info()
-			end,
-		})
-	end)
-end
-
--- Initialize
-enable()
-
 local volume_icon = wibox.widget({
 	markup = "<span foreground='" .. beautiful.color4 .. "'><b>󰋋</b></span>",
 	align = "center",
@@ -392,7 +283,7 @@ local hide_volume_adjust = gears.timer({
 	end,
 })
 
-awesome.connect_signal("signal::volume", function(vol, muted)
+awesome.connect_signal("evil::volume", function(vol, muted)
 	volume_bar.value = vol
 
 	if muted or vol == 0 then

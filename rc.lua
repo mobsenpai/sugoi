@@ -95,6 +95,12 @@ lock_screen.init()
 -- Window switcher
 require("modules.window_switcher").enable()
 
+-- Daemons
+-- Most widgets that display system/external info depend on evil.
+-- Make sure to initialize it last in order to allow all widgets to connect to
+-- their needed evil signals.
+require("evil")
+
 -- Get screen geometry
 -- I am using a single screen setup and I assume that screen geometry will not
 -- change during the session.
