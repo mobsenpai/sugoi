@@ -740,9 +740,9 @@ end)
 -- Startup apps
 -- ===================================================================
 -- Spawn once
--- awful.spawn.once(" ", false)
+-- awful.spawn.once({}, false)
 -- With shell
--- awful.spawn.with_shell(" ", false)
+-- awful.spawn.with_shell({}, false)
 
 -- Garbage collection
 -- Enable for lower memory consumption
