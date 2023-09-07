@@ -23,7 +23,7 @@ user = {
 	lock_screen_custom_password = "awesome",
 }
 
--- initialization
+-- Initialization
 -- =============================================
 local beautiful = require("beautiful")
 -- Make dpi function global
@@ -740,9 +740,9 @@ end)
 -- Startup apps
 -- ===================================================================
 -- Spawn once
--- awful.spawn.once("command", false)
--- Suspend + lockscreen
-awful.spawn.with_shell("xss-lock -- awesome-client 'lock_screen_show()'", false)
+-- awful.spawn.once(" ", false)
+-- With shell
+-- awful.spawn.with_shell(" ", false)
 
 -- Garbage collection
 -- Enable for lower memory consumption
