@@ -15,7 +15,7 @@ local lock_animation_icon = wibox.widget({
 	--- Set forced size to prevent flickering when the icon rotates
 	forced_height = dpi(80),
 	forced_width = dpi(80),
-	font = beautiful.icon_font .. "Outlined 40",
+	font = beautiful.icon_font_name .. "40",
 	align = "center",
 	valign = "center",
 	widget = wibox.widget.textbox(lock_screen_symbol),
@@ -23,11 +23,15 @@ local lock_animation_icon = wibox.widget({
 
 local some_textbox = wibox.widget.textbox()
 
+-- Create the lock screen wibox
+-- Use widgets::splash::visibility or
+-- Set the type to "splash" and set all "splash" windows to be blurred in your
+-- compositor configuration file
 lock_screen_box = wibox({ visible = false, ontop = true, type = "splash", screen = screen.primary })
 awful.placement.maximize(lock_screen_box)
 
 lock_screen_box.bg = beautiful.transparent
-lock_screen_box.fg = beautiful.color15
+lock_screen_box.fg = beautiful.fg_normal
 
 --- Add lockscreen to each screen
 awful.screen.connect_for_each_screen(function(s)
@@ -41,7 +45,7 @@ awful.screen.connect_for_each_screen(function(s)
 			screen = s,
 		})
 		awful.placement.maximize(s.mylockscreen)
-		s.mylockscreen.bg = beautiful.background
+		s.mylockscreen.bg = beautiful.bg_normal
 	end
 end)
 
@@ -172,7 +176,7 @@ end
 local function activate_word(w)
 	for i, m in pairs(char_map[w]) do
 		local text = m.text
-		m.markup = "<span foreground='" .. beautiful.color15 .. "'>" .. text .. "</span>"
+		m.markup = "<span foreground='" .. beautiful.fg_normal .. "'>" .. text .. "</span>"
 	end
 end
 
@@ -255,7 +259,7 @@ end
 
 local lock_animation_arc = wibox.widget({
 	shape = arc(),
-	bg = "#00000000",
+	bg = beautiful.transparent,
 	forced_width = dpi(100),
 	forced_height = dpi(100),
 	widget = wibox.container.background,
@@ -276,24 +280,24 @@ local function reset()
 	characters_entered = 0
 	lock_animation_icon.markup = lock_screen_symbol
 	lock_animation_widget_rotate.direction = "north"
-	lock_animation_arc.bg = "#00000000"
+	lock_animation_arc.bg = beautiful.transparent
 end
 
 local function fail()
 	characters_entered = 0
 	lock_animation_icon.markup = lock_screen_fail_symbol
 	lock_animation_widget_rotate.direction = "north"
-	lock_animation_arc.bg = "#00000000"
+	lock_animation_arc.bg = beautiful.transparent
 end
 
 local animation_colors = {
 	--- Rainbow sequence
-	beautiful.color1,
-	beautiful.color5,
-	beautiful.color4,
-	beautiful.color6,
-	beautiful.color2,
-	beautiful.color3,
+	beautiful.red,
+	beautiful.magenta,
+	beautiful.blue,
+	beautiful.cyan,
+	beautiful.green,
+	beautiful.yellow,
 }
 
 local animation_directions = { "north", "west", "south", "east" }
@@ -309,7 +313,7 @@ local function key_animation(char_inserted)
 		if characters_entered == 0 then
 			reset()
 		else
-			color = beautiful.color7 .. "55"
+			color = beautiful.white .. "55"
 		end
 	end
 
@@ -359,6 +363,7 @@ local function grab_password()
 				--- YAY
 				reset()
 				set_visibility(false)
+				awesome.emit_signal("widgets::splash::visibility", false)
 			else
 				--- NAY
 				fail()
@@ -369,10 +374,11 @@ local function grab_password()
 	})
 end
 
-function lock_screen_show()
+awesome.connect_signal("summon::lock_screen", function()
 	set_visibility(true)
 	grab_password()
-end
+	awesome.emit_signal("widgets::splash::visibility", true)
+end)
 
 lock_screen_box:setup({
 	--- Horizontal centering

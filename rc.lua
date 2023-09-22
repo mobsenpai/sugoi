@@ -3,13 +3,16 @@
 -- ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀░▀░▀░▀░▀░░░▀▀▀░░░▀▀▀░░░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 
 -- >> The file that binds everything together.
+local client = client
+local screen = screen
+local decorations = {}
 
 -- User variables and preferences
 -- =============================================
 user = {
-	terminal = "alacritty",
-	floating_terminal = "alacritty --class floating_terminal",
-	scratchpad_terminal = "alacritty --class scratchpad -e tmux",
+	terminal = "kitty",
+	floating_terminal = "kitty --class floating_terminal",
+	scratchpad_terminal = "kitty --class scratchpad",
 	editor = os.getenv("EDITOR") or "nano",
 	browser = "vivaldi",
 	file_manager = "pcmanfm",
@@ -76,7 +79,8 @@ apps = {
 		helpers.run_or_raise({ class = 'Pavucontrol' }, true, "pavucontrol")
 	end,
 	process_monitor = function()
-		helpers.run_or_raise({ instance = 'htop' }, false, user.terminal .. " --class htop -e htop", { switchtotag = true })
+		helpers.run_or_raise({ instance = 'gotop' }, false, user.terminal .. " --class gotop -e gotop",
+			{ switchtotag = true })
 	end
 }
 
@@ -89,11 +93,11 @@ local keys = require("keys")
 -- Lock screen
 -- Make sure to install lua-pam as described in the README or configure your
 -- custom password in the 'user' section above
-local lock_screen = require("modules.lockscreen")
-lock_screen.init()
-
+require("modules.lockscreen")
 -- Window switcher
-require("modules.window_switcher").enable()
+require("modules.window_switcher")
+-- Notification center
+require("modules.notification_center")
 
 -- Daemons
 -- Most widgets that display system/external info depend on evil.
@@ -104,8 +108,8 @@ require("evil")
 -- Get screen geometry
 -- I am using a single screen setup and I assume that screen geometry will not
 -- change during the session.
-screen_width = awful.screen.focused().geometry.width
-screen_height = awful.screen.focused().geometry.height
+local screen_width = awful.screen.focused().geometry.width
+local screen_height = awful.screen.focused().geometry.height
 
 -- Layouts
 -- ===================================================================
@@ -140,11 +144,10 @@ local function set_wallpaper(s)
 		end
 
 		-- >> Method 1: Built in wallpaper function
-		-- gears.wallpaper.fit(wallpaper, s, true)
-		gears.wallpaper.maximized(wallpaper, s, true)
+		-- gears.wallpaper.maximized(wallpaper, s, true)
 
 		-- >> Method 2: Set theme's wallpaper with feh
-		--awful.spawn.with_shell("feh --bg-fill " .. wallpaper)
+		awful.spawn.with_shell("feh --bg-fill " .. wallpaper)
 
 		-- >> Method 3: Set last wallpaper with feh
 		-- awful.spawn.with_shell(os.getenv("HOME") .. "/.fehbg")
@@ -153,7 +156,6 @@ end
 
 -- Set wallpaper
 awful.screen.connect_for_each_screen(function(s)
-	-- Wallpaper
 	set_wallpaper(s)
 end)
 
@@ -171,12 +173,12 @@ awful.screen.connect_for_each_screen(function(s)
 		l.max,
 		l.max,
 		l.max,
-		l.tile,
-		l.max,
 		l.max,
 		l.max,
 		l.tile,
-		l.max,
+		l.tile,
+		l.tile,
+		l.tile,
 	}
 
 	-- Tag names
@@ -232,7 +234,7 @@ awful.rules.rules = {
 			honor_workarea = true,
 			honor_padding = true,
 			maximized = false,
-			titlebars_enabled = beautiful.titlebar_enabled,
+			titlebars_enabled = beautiful.titlebars_enabled,
 			maximized_horizontal = false,
 			maximized_vertical = false,
 			placement = floating_client_placement,
@@ -553,9 +555,11 @@ awful.rules.rules = {
 		rule_any = {
 			class = {
 				"htop",
+				"gotop",
 			},
 			instance = {
 				"htop",
+				"gotop",
 			},
 		},
 		properties = { screen = 1, tag = awful.screen.focused().tags[5] },
@@ -709,33 +713,58 @@ client.connect_signal("property::floating", function(c)
 	end
 end)
 
+-- Hide all windows when a splash is shown
+awesome.connect_signal("widgets::splash::visibility", function(vis)
+	local t = screen.primary.selected_tag
+	if vis then
+		for idx, c in ipairs(t:clients()) do
+			c.hidden = true
+		end
+	else
+		for idx, c in ipairs(t:clients()) do
+			c.hidden = false
+		end
+	end
+end)
+
 -- Decorations
 -- =============================================
+local wibox = require("wibox")
 -- Apply rounded corners to clients if needed
--- Disable this if using picom to round your corners
--- if beautiful.border_radius and beautiful.border_radius > 0 then
--- 	client.connect_signal("manage", function(c, startup)
--- 		if not c.fullscreen and not c.maximized then
--- 			c.shape = helpers.rrect(beautiful.border_radius)
--- 		end
--- 	end)
+if beautiful.border_radius and beautiful.border_radius > 0 then
+	client.connect_signal("manage", function(c, startup)
+		if not c.fullscreen and not c.maximized then
+			c.shape = helpers.rrect(beautiful.border_radius)
+		end
+	end)
 
--- 	-- Fullscreen and maximized clients should not have rounded corners
--- 	local function no_round_corners(c)
--- 		if c.fullscreen or c.maximized then
--- 			c.shape = gears.shape.rectangle
--- 		else
--- 			c.shape = helpers.rrect(beautiful.border_radius)
--- 		end
--- 	end
+	-- Fullscreen and maximized clients should not have rounded corners
+	local function no_round_corners(c)
+		if c.fullscreen or c.maximized then
+			c.shape = gears.shape.rectangle
+		else
+			c.shape = helpers.rrect(beautiful.border_radius)
+		end
+	end
 
--- 	client.connect_signal("property::fullscreen", no_round_corners)
--- 	client.connect_signal("property::maximized", no_round_corners)
+	client.connect_signal("property::fullscreen", no_round_corners)
+	client.connect_signal("property::maximized", no_round_corners)
 
--- 	beautiful.snap_shape = beautiful.snap_shape
--- else
--- 	beautiful.snap_shape = gears.shape.rectangle
--- end
+	beautiful.snap_shape = helpers.rrect(beautiful.border_radius * 2)
+else
+	beautiful.snap_shape = gears.shape.rectangle
+end
+
+function decorations.show(c)
+	if not c.custom_decoration or not c.custom_decoration[beautiful.titlebar_position] then
+		awful.titlebar.show(c, beautiful.titlebar_position)
+	end
+end
+
+-- Add a template titlebar
+client.connect_signal("request::titlebars", function(c)
+	awful.titlebar(c)
+end)
 
 -- Startup apps
 -- ===================================================================
@@ -743,10 +772,4 @@ end)
 -- awful.spawn.once({}, false)
 -- With shell
 -- awful.spawn.with_shell({}, false)
-
--- Garbage collection
--- Enable for lower memory consumption
--- ===================================================================
-collectgarbage("setpause", 110)
-collectgarbage("setstepmul", 1000)
 -- EOF ------------------------------------------------------------------------

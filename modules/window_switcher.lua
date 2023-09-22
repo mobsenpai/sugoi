@@ -123,163 +123,159 @@ local function draw_widget(mouse_keys)
   })
 end
 
-local enable = function()
-  local hide_window_switcher_key = "Escape"
+local hide_window_switcher_key = "Escape"
 
-  local select_client_key = 1
-  local minimize_key = "n"
-  local unminimize_key = "N"
-  local kill_client_key = "q"
+local select_client_key = 1
+local minimize_key = "n"
+local unminimize_key = "N"
+local kill_client_key = "q"
 
-  local cycle_key = "Tab"
+local cycle_key = "Tab"
 
-  local previous_key = "Left"
-  local next_key = "Right"
+local previous_key = "Left"
+local next_key = "Right"
 
-  local vim_previous_key = "h"
-  local vim_next_key = "l"
+local vim_previous_key = "h"
+local vim_next_key = "l"
 
-  local scroll_previous_key = 4
-  local scroll_next_key = 5
+local scroll_previous_key = 4
+local scroll_next_key = 5
 
-  local window_switcher_box = awful.popup({
-    -- bg = beautiful.transparent,
-    visible = false,
-    ontop = true,
-    placement = awful.placement.centered,
-    screen = awful.screen.focused(),
-    widget = wibox.container.background, -- A dummy widget to make awful.popup not scream
-    widget = draw_widget(),
+local window_switcher_box = awful.popup({
+  -- bg = beautiful.transparent,
+  visible = false,
+  ontop = true,
+  placement = awful.placement.centered,
+  screen = awful.screen.focused(),
+  widget = wibox.container.background, -- A dummy widget to make awful.popup not scream
+  widget = draw_widget(),
+})
+
+local mouse_keys = gears.table.join(
+  awful.button({
+    modifiers = { "Any" },
+    button = select_client_key,
+    on_press = function(c)
+      client.focus = c
+    end,
+  }),
+
+  awful.button({
+    modifiers = { "Any" },
+    button = scroll_previous_key,
+    on_press = function()
+      awful.client.focus.byidx(-1)
+    end,
+  }),
+
+  awful.button({
+    modifiers = { "Any" },
+    button = scroll_next_key,
+    on_press = function()
+      awful.client.focus.byidx(1)
+    end,
   })
+)
 
-  local mouse_keys = gears.table.join(
-    awful.button({
-      modifiers = { "Any" },
-      button = select_client_key,
-      on_press = function(c)
-        client.focus = c
-      end,
-    }),
+local keyboard_keys = {
+  [hide_window_switcher_key] = function()
+    window_switcher_hide(window_switcher_box)
+  end,
 
-    awful.button({
-      modifiers = { "Any" },
-      button = scroll_previous_key,
-      on_press = function()
-        awful.client.focus.byidx(-1)
-      end,
-    }),
-
-    awful.button({
-      modifiers = { "Any" },
-      button = scroll_next_key,
-      on_press = function()
-        awful.client.focus.byidx(1)
-      end,
-    })
-  )
-
-  local keyboard_keys = {
-    [hide_window_switcher_key] = function()
-      window_switcher_hide(window_switcher_box)
-    end,
-
-    [minimize_key] = function()
-      if client.focus then
-        client.focus.minimized = true
-      end
-    end,
-    [unminimize_key] = function()
-      if awful.client.restore() then
-        client.focus = awful.client.restore()
-      end
-    end,
-    [kill_client_key] = function()
-      if client.focus then
-        client.focus:kill()
-      end
-    end,
-
-    [cycle_key] = function()
-      awful.client.focus.byidx(1)
-    end,
-
-    [previous_key] = function()
-      awful.client.focus.byidx(1)
-    end,
-    [next_key] = function()
-      awful.client.focus.byidx(-1)
-    end,
-
-    [vim_previous_key] = function()
-      awful.client.focus.byidx(1)
-    end,
-    [vim_next_key] = function()
-      awful.client.focus.byidx(-1)
-    end,
-  }
-
-  window_switcher_box:connect_signal("property::width", function()
-    if window_switcher_box.visible and get_num_clients() == 0 then
-      window_switcher_hide(window_switcher_box)
+  [minimize_key] = function()
+    if client.focus then
+      client.focus.minimized = true
     end
-  end)
-
-  window_switcher_box:connect_signal("property::height", function()
-    if window_switcher_box.visible and get_num_clients() == 0 then
-      window_switcher_hide(window_switcher_box)
+  end,
+  [unminimize_key] = function()
+    if awful.client.restore() then
+      client.focus = awful.client.restore()
     end
-  end)
+  end,
+  [kill_client_key] = function()
+    if client.focus then
+      client.focus:kill()
+    end
+  end,
 
-  awesome.connect_signal("window_switcher::turn_on", function()
-    local number_of_clients = get_num_clients()
-    if number_of_clients == 0 then
+  [cycle_key] = function()
+    awful.client.focus.byidx(1)
+  end,
+
+  [previous_key] = function()
+    awful.client.focus.byidx(1)
+  end,
+  [next_key] = function()
+    awful.client.focus.byidx(-1)
+  end,
+
+  [vim_previous_key] = function()
+    awful.client.focus.byidx(1)
+  end,
+  [vim_next_key] = function()
+    awful.client.focus.byidx(-1)
+  end,
+}
+
+window_switcher_box:connect_signal("property::width", function()
+  if window_switcher_box.visible and get_num_clients() == 0 then
+    window_switcher_hide(window_switcher_box)
+  end
+end)
+
+window_switcher_box:connect_signal("property::height", function()
+  if window_switcher_box.visible and get_num_clients() == 0 then
+    window_switcher_hide(window_switcher_box)
+  end
+end)
+
+awesome.connect_signal("window_switcher::turn_on", function()
+  local number_of_clients = get_num_clients()
+  if number_of_clients == 0 then
+    return
+  end
+
+  -- Store client that is focused in a variable
+  window_switcher_first_client = client.focus
+
+  -- Stop recording focus history
+  awful.client.focus.history.disable_tracking()
+
+  -- Go to previously focused client (in the tag)
+  awful.client.focus.history.previous()
+
+  -- Track minimized clients
+  -- Unminimize them
+  -- Lower them so that they are always below other
+  -- originally unminimized windows
+  local clients = awful.screen.focused().selected_tag:clients()
+  for _, c in pairs(clients) do
+    if c.minimized then
+      table.insert(window_switcher_minimized_clients, c)
+      c.minimized = false
+      c:lower()
+    end
+  end
+
+  -- Start the keygrabber
+  window_switcher_grabber = awful.keygrabber.run(function(_, key, event)
+    if event == "release" then
+      -- Hide if the modifier was released
+      -- We try to match Super or Alt or Control since we do not know which keybind is
+      -- used to activate the window switcher (the keybind is set by the user in keys.lua)
+      if key:match("Super") or key:match("Alt") or key:match("Control") then
+        window_switcher_hide(window_switcher_box)
+      end
+      -- Do nothing
       return
     end
 
-    -- Store client that is focused in a variable
-    window_switcher_first_client = client.focus
-
-    -- Stop recording focus history
-    awful.client.focus.history.disable_tracking()
-
-    -- Go to previously focused client (in the tag)
-    awful.client.focus.history.previous()
-
-    -- Track minimized clients
-    -- Unminimize them
-    -- Lower them so that they are always below other
-    -- originally unminimized windows
-    local clients = awful.screen.focused().selected_tag:clients()
-    for _, c in pairs(clients) do
-      if c.minimized then
-        table.insert(window_switcher_minimized_clients, c)
-        c.minimized = false
-        c:lower()
-      end
+    -- Run function attached to key, if it exists
+    if keyboard_keys[key] then
+      keyboard_keys[key]()
     end
-
-    -- Start the keygrabber
-    window_switcher_grabber = awful.keygrabber.run(function(_, key, event)
-      if event == "release" then
-        -- Hide if the modifier was released
-        -- We try to match Super or Alt or Control since we do not know which keybind is
-        -- used to activate the window switcher (the keybind is set by the user in keys.lua)
-        if key:match("Super") or key:match("Alt") or key:match("Control") then
-          window_switcher_hide(window_switcher_box)
-        end
-        -- Do nothing
-        return
-      end
-
-      -- Run function attached to key, if it exists
-      if keyboard_keys[key] then
-        keyboard_keys[key]()
-      end
-    end)
-
-    window_switcher_box.widget = draw_widget(mouse_keys)
-    window_switcher_box.visible = true
   end)
-end
 
-return { enable = enable }
+  window_switcher_box.widget = draw_widget(mouse_keys)
+  window_switcher_box.visible = true
+end)

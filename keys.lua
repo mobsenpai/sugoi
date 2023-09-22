@@ -8,12 +8,15 @@ local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local naughty = require("naughty")
 local helpers = require("helpers")
-
+local awesome = awesome
+local client = client
+local root = root
 local keys = {}
-mod = "Mod4"
-alt = "Mod1"
-ctrl = "Control"
-shift = "Shift"
+
+local mod = "Mod4"
+local alt = "Mod1"
+local ctrl = "Control"
+local shift = "Shift"
 
 -- Menu
 -- =============================================
@@ -28,12 +31,13 @@ menu.awesome = {
 
 menu.mainmenu = awful.menu({
 	items = {
-		{ "  Terminal",    user.terminal },
-		{ "  Explorer",    user.file_manager },
-		{ "  Browser",     user.browser },
-		{ "  Editor",      user.terminal .. " -e " .. user.editor },
+		{ "  Terminal", user.terminal },
+		{ "  Explorer", user.file_manager },
+		{ "  Browser", user.browser },
+		{ "  Editor", user.terminal .. " -e " .. user.editor },
 		{ "󰨞  GUI Editor", user.visual_editor },
-		{ "  AwesomeWM",   menu.awesome },
+		{ "  AwesomeWM", menu.awesome },
+		{ " Notifications", function() awesome.emit_signal("summon::notif_center") end },
 	},
 })
 -- =============================================
@@ -43,7 +47,7 @@ menu.mainmenu = awful.menu({
 keys.desktopbuttons = gears.table.join(
 	awful.button({}, 1, function()
 		-- Single tap
-		-- awesome.emit_signal("elemental::dismiss")
+		awesome.emit_signal("summon::dismiss")
 		naughty.destroy_all_notifications()
 		if menu.mainmenu then
 			menu.mainmenu:hide()
@@ -289,7 +293,7 @@ keys.globalkeys = gears.table.join(
 		hotkeys_popup.show_help()
 	end, { description = "show help", group = "awesome" }),
 
-	-- Volume Control with volume keys
+	-- Volume control with volume keys
 	awful.key({}, "XF86AudioMute",
 		function()
 			helpers.volume_control(0)
@@ -297,15 +301,27 @@ keys.globalkeys = gears.table.join(
 	awful.key({}, "XF86AudioLowerVolume",
 		function()
 			helpers.volume_control(-5)
+			awesome.emit_signal("summon::osd")
 		end, { description = "lower volume", group = "volume" }),
 	awful.key({}, "XF86AudioRaiseVolume",
 		function()
 			helpers.volume_control(5)
+			awesome.emit_signal("summon::osd")
 		end, { description = "raise volume", group = "volume" }),
+
+	-- Brightness control with brightness keys
+	awful.key({}, "XF86MonBrightnessUp",
+		function()
+			awful.spawn("brightnessctl s +5%")
+		end, { description = "increase brightness", group = "brightness" }),
+	awful.key({}, "XF86MonBrightnessDown",
+		function()
+			awful.spawn("brightnessctl s 5%-")
+		end, { description = "increase brightness", group = "brightness" }),
 
 	-- Lockscreen
 	awful.key({ mod, alt }, "l", function()
-		lock_screen_show()
+		awesome.emit_signal("summon::lock_screen")
 	end, { description = "lock screen", group = "hotkeys" }),
 
 	-- Apps
@@ -427,15 +443,15 @@ keys.clientbuttons = gears.table.join(
 		client.focus = c
 		awful.mouse.client.resize(c)
 		-- awful.mouse.resize(c, nil, {jump_to_corner=true})
-	end),
-
-	-- Super + scroll = Change client opacity
-	awful.button({ mod }, 4, function(c)
-		c.opacity = c.opacity + 0.1
-	end),
-	awful.button({ mod }, 5, function(c)
-		c.opacity = c.opacity - 0.1
 	end)
+
+-- Super + scroll = Change client opacity
+-- awful.button({ mod }, 4, function(c)
+-- 	c.opacity = c.opacity + 0.1
+-- end),
+-- awful.button({ mod }, 5, function(c)
+-- 	c.opacity = c.opacity - 0.1
+-- end)
 )
 
 -- Mouse buttons on the tasklist

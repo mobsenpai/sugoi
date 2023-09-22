@@ -11,27 +11,36 @@ local function emit()
     local volume = tonumber(string.match(out:match("(%d%.%d+)") * 100, "(%d+)"))
     local muted = out:match("MUTED")
 
+    local icon = ""
+    if muted or volume == 0 then
+      icon = "󰝟"
+    elseif volume <= 33 then
+      icon = "󰕿"
+    elseif volume <= 66 then
+      icon = "󰖀"
+    elseif volume <= 100 then
+      icon = "󰕾"
+    else
+      icon = ""
+    end
+
     if volume ~= volume_old or muted ~= muted_old then
-      awesome.emit_signal("evil::volume", volume, muted)
+      awesome.emit_signal("evil::volume", volume, muted, icon)
       volume_old = volume
       muted_old = muted
     end
   end)
 end
 
-local function enable()
-  emit()
+emit()
 
-  local subscribe =
-  [[ bash -c "LANG=C pactl subscribe 2> /dev/null | grep --line-buffered \"Event 'change' on sink\"" ]]
+local subscribe =
+[[ bash -c "LANG=C pactl subscribe 2> /dev/null | grep --line-buffered \"Event 'change' on sink\"" ]]
 
-  awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^pactl subscribe" }, function()
-    awful.spawn.with_line_callback(subscribe, {
-      stdout = function()
-        emit()
-      end,
-    })
-  end)
-end
-
-return { enable = enable }
+awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^pactl subscribe" }, function()
+  awful.spawn.with_line_callback(subscribe, {
+    stdout = function()
+      emit()
+    end,
+  })
+end)

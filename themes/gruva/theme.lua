@@ -8,69 +8,57 @@ local dpi = xresources.apply_dpi
 local xrdb = xresources.get_current_theme()
 local gears = require("gears")
 local gfs = require("gears.filesystem")
-local themes_path = gfs.get_themes_dir()
 local helpers = require("helpers")
+local theme = {}
 
--- Inherit default theme
-local theme = dofile(themes_path .. "default/theme.lua")
-theme.wallpaper = "/home/yashraj/Pictures/wall.png"
+-- Default wallpaper
+theme.wallpaper = os.getenv("HOME") .. "/Pictures/wall.png"
 
 -- ░█▀▀░█▀█░█▀█░▀█▀░█▀▀
 -- ░█▀▀░█░█░█░█░░█░░▀▀█
 -- ░▀░░░▀▀▀░▀░▀░░▀░░▀▀▀
 
-theme.font_name = "JetBrainsMono Nerd Font "
-theme.font = theme.font_name .. "Bold 9"
-theme.icon_font = theme.font_name .. "Bold "
+theme.font_name = "monospace "
+theme.font = theme.font_name .. "10"
+theme.wibar_font = theme.font_name .. "Bold 10"
+theme.icon_font_name = "monospace "
+theme.wibar_icon_font = theme.font_name .. "12"
 
 -- ░█▀▀░█▀█░█░░░█▀█░█▀▄░█▀▀
 -- ░█░░░█░█░█░░░█░█░█▀▄░▀▀█
 -- ░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 
-theme.background = xrdb.background or "#"
-theme.foreground = xrdb.foreground or "#"
--- Black
-theme.color0 = xrdb.color0 or "#"
-theme.color8 = xrdb.color8 or "#"
--- Red
-theme.color1 = xrdb.color1 or "#"
-theme.color9 = xrdb.color9 or "#"
--- Green
-theme.color2 = xrdb.color2 or "#"
-theme.color10 = xrdb.color10 or "#"
--- Yellow
-theme.color3 = xrdb.color3 or "#"
-theme.color11 = xrdb.color11 or "#"
--- Blue
-theme.color4 = xrdb.color4 or "#"
-theme.color12 = xrdb.color12 or "#"
--- Magenta
-theme.color5 = xrdb.color5 or "#"
-theme.color13 = xrdb.color13 or "#"
--- Cyan
-theme.color6 = xrdb.color6 or "#"
-theme.color14 = xrdb.color14 or "#"
--- White
-theme.color7 = xrdb.color7 or "#"
-theme.color15 = xrdb.color15 or "#"
-
--- Special
+-- new colors
+theme.black = xrdb.color0
+theme.black_alt = xrdb.color8
+theme.red = xrdb.color1
+theme.darkred = helpers.lighten(theme.red, -10)
+theme.green = xrdb.color2
+theme.darkgreen = helpers.lighten(theme.green, -10)
+theme.yellow = xrdb.color3
+theme.darkyellow = helpers.lighten(theme.yellow, -10)
+theme.blue = xrdb.color4
+theme.darkblue = helpers.lighten(theme.blue, -10)
+theme.magenta = xrdb.color5
+theme.darkmagenta = helpers.lighten(theme.magenta, -10)
+theme.cyan = xrdb.color6
+theme.darkcyan = helpers.lighten(theme.cyan, -10)
+theme.white = xrdb.color7
+theme.white_alt = xrdb.color15
+theme.light_bg = helpers.lighten(theme.black, 5)
 theme.transparent = "#00000000"
-theme.lighter_bg = "#3c3836"
-theme.darker_bg = "#1d2021"
-theme.orange = "#d65d0e"
 
 -- Background Colors
-theme.bg_normal = theme.background
-theme.bg_focus = theme.color4 .. 70
-theme.bg_urgent = theme.color3
-theme.bg_minimize = theme.background .. 55
+theme.bg_normal = theme.black
+theme.bg_focus = helpers.lighten(theme.cyan, -30)
+theme.bg_urgent = theme.red
+theme.bg_minimize = theme.black_alt
 
 -- Foreground Colors
-theme.fg_normal = theme.foreground
-theme.fg_focus = theme.color7
-theme.fg_urgent = theme.color1
-theme.fg_minimize = theme.foreground .. 55
+theme.fg_normal = theme.white
+theme.fg_focus = theme.white
+theme.fg_urgent = theme.white
+theme.fg_minimize = theme.black
 
 --- ░█░█░▀█▀░░░█▀▀░█░░░█▀▀░█▄█░█▀▀░█▀█░▀█▀░█▀▀
 --- ░█░█░░█░░░░█▀▀░█░░░█▀▀░█░█░█▀▀░█░█░░█░░▀▀█
@@ -79,49 +67,125 @@ theme.fg_minimize = theme.foreground .. 55
 -- Borders
 -- ===================================================================
 theme.border_width = dpi(3)
-theme.border_normal = theme.lighter_bg
-theme.border_focus = theme.color2
-theme.border_radius = dpi(0)
+theme.border_normal = theme.light_bg
+theme.border_focus = theme.blue
+theme.border_radius = dpi(15)
 theme.widget_border_width = dpi(2)
-theme.widget_border_color = theme.color8
+theme.widget_border_color = theme.light_bg
+
+-- Wibar
+-- ===================================================================
+theme.wibar_position = "top"
+theme.wibar_height = dpi(27)
+theme.wibar_width = dpi(1366)
+theme.wibar_bg = theme.black
+theme.wibar_fg = theme.white
+theme.wibar_border_color = theme.black
+theme.wibar_border_width = dpi(0)
+theme.wibar_border_radius = dpi(0)
 
 -- Taglist
 -- ===================================================================
-local taglist_square_size = dpi(0)
-theme.taglist_font = theme.font_taglist
-theme.taglist_bg = theme.wibar_bg
-theme.taglist_bg_focus = theme.orange
-theme.taglist_fg_focus = theme.darker_bg
+theme.taglist_text_font = theme.wibar_ico_font
+theme.taglist_text_empty = { "", "", "", "", "", "", "[]=", "", "", "" }
+theme.taglist_text_occupied = { "", "", "", "", "", "", "[]=", "", "", "" }
+theme.taglist_text_focused = { "", "", "", "", "", "", "[]=", "", "", "" }
+theme.taglist_text_urgent = { "", "", "", "", "", "", "", "", "", "" }
+
+theme.taglist_text_color_empty = {
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt,
+  theme.black_alt
+}
+theme.taglist_text_color_occupied = {
+  theme.blue,
+  theme.green,
+  theme.yellow,
+  theme.red,
+  theme.cyan,
+  theme.magenta,
+  theme.cyan,
+  theme.cyan,
+  theme.cyan,
+  theme.cyan
+}
+theme.taglist_text_color_focused = {
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus,
+  theme.fg_focus
+}
+theme.taglist_text_color_urgent = {
+  theme.blue,
+  theme.green,
+  theme.yellow,
+  theme.red,
+  theme.cyan,
+  theme.magenta,
+  theme.cyan,
+  theme.cyan,
+  theme.cyan,
+  theme.cyan
+}
+
+-- Text Taglist (default)
+theme.taglist_font = theme.wibar_font
+theme.taglist_bg_focus = theme.wibar_bg
+theme.taglist_fg_focus = theme.fg_focus
 theme.taglist_bg_occupied = theme.wibar_bg
 theme.taglist_fg_occupied = theme.fg_normal
 theme.taglist_bg_empty = theme.wibar_bg
-theme.taglist_fg_empty = theme.lighter_bg
-theme.taglist_bg_urgent = theme.color1 .. "55"
-theme.taglist_fg_urgent = theme.color1
+theme.taglist_fg_empty = theme.black_alt
+theme.taglist_bg_urgent = theme.bg_urgent
+theme.taglist_fg_urgent = theme.fg_urgent
 theme.taglist_disable_icon = true
 theme.taglist_spacing = dpi(0)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
+local taglist_square_size = dpi(0)
+theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_focus)
 theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
 
 -- Tasklist
 -- ===================================================================
 theme.tasklist_font = theme.font
-theme.tasklist_disable_icon = true
+theme.tasklist_disable_icon = false
 theme.tasklist_plain_task_name = true
-theme.tasklist_bg_focus = theme.color0
-theme.tasklist_fg_focus = theme.color2
-theme.tasklist_bg_normal = theme.color0
-theme.tasklist_fg_normal = theme.foreground
+theme.tasklist_bg_focus = theme.wibar_bg
+theme.tasklist_fg_focus = theme.fg_focus
+theme.tasklist_bg_normal = theme.wibar_bg
+theme.tasklist_fg_normal = theme.black_alt
 theme.tasklist_bg_minimize = theme.bg_minimize
 theme.tasklist_fg_minimize = theme.fg_minimize
-theme.tasklist_disable_task_name = false
 theme.tasklist_bg_urgent = theme.bg_urgent
 theme.tasklist_fg_urgent = theme.fg_urgent
-theme.tasklist_align = "center"
+theme.tasklist_align = "left"
 
 --- Titlebar
 -- ===================================================================
-theme.titlebar_enabled = false
+theme.titlebars_enabled = false
+theme.titlebar_size = dpi(32)
+theme.titlebar_title_enabled = true
+theme.titlebar_font = theme.font
+theme.titlebar_title_align = "center"
+theme.titlebar_position = "top"
+theme.titlebar_bg = theme.bg_normal
+-- theme.titlebar_bg_focus = theme.bg_focus
+-- theme.titlebar_bg_normal = theme.bg_normal
+-- theme.titlebar_fg = theme.fg_normal
+-- theme.titlebar_fg_focus = theme.fg_focus
+-- theme.titlebar_fg_normal = theme.fg_normal
 
 -- Menu
 -- Variables set for theming the menu:
@@ -132,8 +196,8 @@ theme.menu_bg_normal = theme.bg_normal
 theme.menu_fg_normal = theme.fg_normal
 theme.menu_bg_focus = theme.bg_focus
 theme.menu_fg_focus = theme.fg_focus
-theme.menu_border_width = theme.border_width / 2
-theme.menu_border_color = theme.color8
+theme.menu_border_width = theme.widget_border_width
+theme.menu_border_color = theme.widget_border_color
 theme.menu_submenu = ">  "
 theme.menu_submenu_icon = nil
 
@@ -142,17 +206,6 @@ theme.menu_submenu_icon = nil
 theme.useless_gap = dpi(8)
 theme.screen_margin = dpi(3)
 
--- Wibar
--- ===================================================================
-theme.wibar_position = "top"
-theme.wibar_height = dpi(25)
-theme.wibar_width = dpi(1366)
-theme.wibar_bg = theme.color0
-theme.wibar_fg = theme.color7
-theme.wibar_border_color = theme.color0
-theme.wibar_border_width = dpi(0)
-theme.wibar_border_radius = dpi(0)
-
 -- Systray
 -- ===================================================================
 theme.bg_systray = theme.wibar_bg
@@ -160,36 +213,32 @@ theme.bg_systray = theme.wibar_bg
 -- Notifications
 -- ===================================================================
 theme.notification_font = theme.font
-theme.notification_bg = theme.background
-theme.notification_fg = theme.foreground
-theme.notification_border_width = dpi(2)
-theme.notification_border_color = theme.color8
-theme.notification_opacity = 1
-theme.notification_margin = dpi(15)
--- theme.notification_width = dpi(300)
--- theme.notification_height = dpi(80)
-theme.notification_icon_size = dpi(50)
+theme.notification_bg = theme.bg_normal
+theme.notification_fg = theme.fg_normal
+theme.notification_border_width = theme.widget_border_width
+theme.notification_border_color = theme.widget_border_color
+theme.notification_width = dpi(300)
+theme.notification_height = dpi(300)
 theme.notification_position = "top_right"
 theme.notification_border_radius = theme.border_radius
--- theme.notification_crit_bg = theme.color1
--- theme.notification_crit_fg = theme.color0
-theme.notification_padding = theme.screen_margin * 2
+theme.notification_crit_bg = theme.bg_urgent
+theme.notification_crit_fg = theme.fg_urgent
 theme.notification_spacing = theme.screen_margin * 2
 
 -- Misc
 -- ===================================================================
 -- Recolor Layout icons
-theme = theme_assets.recolor_layout(theme, theme.foreground)
+theme = theme_assets.recolor_layout(theme, theme.fg_normal)
 theme.layoutlist_shape_selected = gears.shape.rounded_rect
-theme.layoutlist_bg_selected = theme.color3
+theme.layoutlist_bg_selected = theme.bg_focus
 
 -- Edge snap
-theme.snap_bg = theme.lighter_bg
+theme.snap_bg = theme.light_bg
 theme.snap_shape = helpers.rrect(theme.border_radius)
-theme.snap_border_width = dpi(5)
+theme.snap_border_width = theme.widget_border_width
 
 -- Hotkeys popup
-theme.hotkeys_modifiers_fg = theme.color12
+theme.hotkeys_modifiers_fg = theme.blue
 
 return theme
 -- EOF ------------------------------------------------------------------------

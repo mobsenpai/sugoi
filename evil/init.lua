@@ -3,7 +3,7 @@ require("evil.cpu")
 require("evil.ram")
 
 -- User controlled
-require("evil.volume").enable()
+require("evil.volume")
 require("evil.spotify")
 
 -- Internet access required
