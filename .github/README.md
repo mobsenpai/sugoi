@@ -3,7 +3,7 @@
 <!-- RICE PREVIEW -->
 <div align="center">
    <a href="#--------">
-      <img src="https://i.imgur.com/vhlm6uN.png" alt="Rice Preview">
+      <img src="https://i.imgur.com/16RObqJ.png" alt="Rice Preview">
    </a>
 </div>
 
@@ -43,10 +43,10 @@ Although it takes time and effort to configure it, I am very satisfied with this
 Here are some details about my setup:
 
 - **WM:** [awesome](https://github.com/awesomeWM/awesome)
-- **Terminal:** [alacritty](https://github.com/alacritty/alacritty)
+- **Terminal:** [kitty](https://github.com/kovidgoyal/kitty)
 - **Shell:** [bash](https://www.gnu.org/software/bash/)
-- **Editor:** [neovim](https://github.com/neovim/neovim) / [vscodium](https://github.com/VSCodium/vscodium)
-- **Compositor:** [picom](https://github.com/yshui/picom)
+- **Editor:** [nvchad](https://github.com/NvChad/NvChad) / [vscodium](https://github.com/VSCodium/vscodium)
+- **Compositor:** [picom (dccsillag's fork)](https://github.com/dccsillag/picom)
 - **Application Launcher:** [rofi](https://github.com/davatorium/rofi)
 
 Main Features:
@@ -116,15 +116,25 @@ Log out from your current desktop session and log in into AwesomeWM
 
 | <b>Modern Top Panel</b>                                                                                      |
 | ------------------------------------------------------------------------------------------------------------ |
-| <a href="#--------"><img src="https://i.imgur.com/MXVBybd.png" width="500px" alt="bottom panel preview"></a> |
+| <a href="#--------"><img src="https://i.imgur.com/ZGgeCss.png" width="500px" alt="bottom panel preview"></a> |
 
 | <b>Naughty Notifications</b>                                                                                  |
 | ------------------------------------------------------------------------------------------------------------- |
-| <a href="#--------"><img src="https://i.imgur.com/4J5UX59.png" width="500px" alt="notifications preview"></a> |
+| <a href="#--------"><img src="https://i.imgur.com/MY0gDcL.png" width="500px" alt="notifications preview"></a> |
 
 | <b>Lockscreen with [PAM Integration](https://github.com/RMTT/lua-pam)</b>              |
 | -------------------------------------------------------------------------------------- |
 | <a href="#--------"><img src="" width="500px" alt="word clock lockscreen preview"></a> |
+
+| <b>Rofi</b>                                                                                          |
+| ---------------------------------------------------------------------------------------------------- |
+| <a href="#--------"><img src="https://i.imgur.com/uWhOrWb.png" width="500px" alt="rofi preview"></a> |
+
+<details>
+  <summary>Old setup</summary>
+  <img src="https://i.imgur.com/Wvq13QJ.png" width="500px" alt="all"></a>
+
+</details>
 
 ## :scroll: ‎ <samp>License</samp>
 
@@ -141,6 +151,6 @@ sugoi is created by <a href="https://github.com/MobSenpai">MobSenpai</a>.
 
 ## :bulb: ‎ <samp>Acknowledgements</samp>
 
+- [elenapan](https://github.com/elenapan)
 - [rxyhn](https://github.com/rxyhn)
 - [JavaCafe01](https://github.com/JavaCafe01)
-- [elenapan](https://github.com/elenapan)
