@@ -40,7 +40,6 @@ menu.mainmenu = awful.menu({
 		{ " Notifications", function() awesome.emit_signal("summon::notif_center") end },
 	},
 })
--- =============================================
 
 -- Mouse bindings on desktop
 -- =============================================

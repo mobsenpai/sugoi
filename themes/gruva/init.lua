@@ -7,9 +7,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
-local ruled = require("ruled")
 local menubar = require("menubar")
-local json = require("modules.json")
 local keys = require("keys")
 local helpers = require("helpers")
 local awesome = awesome
@@ -44,7 +42,7 @@ local memory_widget = wibox.widget({
 			},
 			left = dpi(5),
 			right = dpi(5),
-			widget = wibox.container.margin
+			widget = wibox.container.margin,
 		},
 		layout = wibox.layout.fixed.horizontal,
 	},
@@ -178,10 +176,12 @@ local weather_widget = wibox.widget({
 })
 
 awesome.connect_signal("evil::weather", function(result)
-	weather_widget:get_children_by_id("description")[1].markup = result.current.weather[1].description:gsub("^%l",
-		string.upper) .. ", "
-	weather_widget:get_children_by_id("temp_current")[1].markup = math.floor(result.current.temp) ..
-			"<sup><span>°</span></sup><span>C</span>"
+	weather_widget:get_children_by_id("description")[1].markup = result.current.weather[1].description:gsub(
+		"^%l",
+		string.upper
+	) .. ", "
+	weather_widget:get_children_by_id("temp_current")[1].markup = math.floor(result.current.temp)
+		.. "<sup><span>°</span></sup><span>C</span>"
 end)
 
 -- Playerctl widget
@@ -227,14 +227,14 @@ awesome.connect_signal("evil::spotify", function(artist, title, status)
 end)
 
 playerctl_widget:buttons(gears.table.join(
--- left click = all players
+	-- left click = all players
 	awful.button({}, 1, function()
 		awful.spawn.with_shell("playerctl play-pause")
 	end)
--- right click = specific player
--- awful.button({}, 3, function()
--- 	awful.spawn.with_shell("mpvc toggle")
--- end)
+	-- right click = specific player
+	-- awful.button({}, 3, function()
+	-- 	awful.spawn.with_shell("mpvc toggle")
+	-- end)
 ))
 
 -- Volume widget
@@ -262,7 +262,7 @@ end)
 
 -- Osd
 -- =============================================
-local slider = wibox.widget {
+local slider = wibox.widget({
 	widget = wibox.widget.progressbar,
 	max_value = 100,
 	forced_width = dpi(380),
@@ -271,22 +271,22 @@ local slider = wibox.widget {
 	bar_shape = gears.shape.rounded_bar,
 	background_color = beautiful.light_bg,
 	color = beautiful.bg_focus,
-}
+})
 
-local icon_widget = wibox.widget {
+local icon_widget = wibox.widget({
 	widget = wibox.widget.textbox,
 	font = beautiful.icon_font_name .. "15",
 	forced_width = dpi(30),
 	align = "center",
 	valign = "center",
-}
+})
 
-local text = wibox.widget {
+local text = wibox.widget({
 	widget = wibox.widget.textbox,
-	halign = "center"
-}
+	halign = "center",
+})
 
-local info = wibox.widget {
+local info = wibox.widget({
 	layout = wibox.layout.fixed.horizontal,
 	{
 		widget = wibox.container.margin,
@@ -302,11 +302,11 @@ local info = wibox.widget {
 				text,
 			},
 			slider,
-		}
-	}
-}
+		},
+	},
+})
 
-local osd = awful.popup {
+local osd = awful.popup({
 	shape = helpers.rrect(beautiful.border_radius),
 	visible = false,
 	ontop = true,
@@ -320,7 +320,7 @@ local osd = awful.popup {
 		awful.placement.bottom(d, { margins = 20 + beautiful.border_width * 2 })
 	end,
 	widget = info,
-}
+})
 
 -- volume
 awesome.connect_signal("evil::volume", function(volume, muted, icon)
@@ -342,10 +342,10 @@ local function osd_hide()
 	osd_timer:stop()
 end
 
-local osd_timer = gears.timer {
+local osd_timer = gears.timer({
 	timeout = 3,
-	callback = osd_hide
-}
+	callback = osd_hide,
+})
 
 local function osd_toggle()
 	if not osd.visible then
@@ -367,15 +367,17 @@ end)
 -- Helper function that updates a taglist item
 local update_taglist = function(item, tag, index)
 	if tag.selected then
-		item.markup = helpers.colorize_text(beautiful.taglist_text_focused[index],
-			beautiful.taglist_text_color_focused[index])
+		item.markup =
+			helpers.colorize_text(beautiful.taglist_text_focused[index], beautiful.taglist_text_color_focused[index])
 	elseif tag.urgent then
-		item.markup = helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
+		item.markup =
+			helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
 	elseif #tag:clients() > 0 then
-		item.markup = helpers.colorize_text(beautiful.taglist_text_occupied[index],
-			beautiful.taglist_text_color_occupied[index])
+		item.markup =
+			helpers.colorize_text(beautiful.taglist_text_occupied[index], beautiful.taglist_text_color_occupied[index])
 	else
-		item.markup = helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
+		item.markup =
+			helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
 	end
 end
 
@@ -402,11 +404,11 @@ awful.screen.connect_for_each_screen(function(s)
 	))
 
 	-- Create a taglist widget
-	s.mytaglist = awful.widget.taglist {
-		screen          = s,
-		filter          = awful.widget.taglist.filter.all,
-		layout          = wibox.layout.fixed.horizontal,
-		buttons         = keys.taglist_buttons,
+	s.mytaglist = awful.widget.taglist({
+		screen = s,
+		filter = awful.widget.taglist.filter.all,
+		layout = wibox.layout.fixed.horizontal,
+		buttons = keys.taglist_buttons,
 		widget_template = {
 			widget = wibox.widget.textbox,
 			create_callback = function(self, tag, index, _)
@@ -421,10 +423,10 @@ awful.screen.connect_for_each_screen(function(s)
 				update_taglist(self, tag, index)
 			end,
 		},
-	}
+	})
 
 	-- Create a tasklist widget
-	s.mytasklist = awful.widget.tasklist {
+	s.mytasklist = awful.widget.tasklist({
 		screen = s,
 		filter = awful.widget.tasklist.filter.currenttags,
 		buttons = keys.tasklist_buttons,
@@ -435,37 +437,37 @@ awful.screen.connect_for_each_screen(function(s)
 		layout = {
 			spacing = dpi(4),
 			-- layout = wibox.layout.fixed.horizontal
-			layout = wibox.layout.flex.horizontal
+			layout = wibox.layout.flex.horizontal,
 		},
 		widget_template = {
 			{
 				{
 					{
 						{
-							id     = 'icon_role',
+							id = "icon_role",
 							widget = wibox.widget.imagebox,
 						},
 						margins = 2,
-						widget  = wibox.container.margin,
+						widget = wibox.container.margin,
 					},
 					{
-						id     = 'text_role',
+						id = "text_role",
 						widget = wibox.widget.textbox,
 					},
 					layout = wibox.layout.fixed.horizontal,
 				},
 				forced_width = dpi(220),
-				left         = 10,
-				right        = 10,
-				widget       = wibox.container.margin
+				left = 10,
+				right = 10,
+				widget = wibox.container.margin,
 			},
 			-- border_width = dpi(2),
 			-- shape  = gears.shape.rounded_bar,
 			-- 	id = "bg_role",
-			id     = 'background_role',
+			id = "background_role",
 			widget = wibox.container.background,
 		},
-	}
+	})
 
 	-- Create a system tray widget
 	s.systray = wibox.widget.systray()
@@ -527,35 +529,24 @@ end)
 
 -- Notification settings
 -- =============================================
-ruled.notification.connect_signal('request::rules', function()
-	ruled.notification.append_rule {
-		rule = { urgency = "normal" },
-		properties = {
-			screen = awful.screen.preferred,
-			implicit_timeout = 4,
-			position = beautiful.notification_position,
-			spacing = dpi(10),
-			bg = beautiful.notification_background,
-			fg = beautiful.notification_foreground,
-			border_width = beautiful.notification_border_width,
-			border_color = beautiful.notification_border_color,
-		}
-	}
+-- Handle notification icon
+naughty.connect_signal("request::icon", function(n, context, hints)
+	-- Handle other contexts here
+	if context ~= "app_icon" then
+		return
+	end
 
-	ruled.notification.append_rule {
-		rule = { urgency = "critical" },
-		properties = {
-			screen = awful.screen.preferred,
-			implicit_timeout = 4,
-			position = beautiful.notification_position,
-			spacing = dpi(10),
-			bg = beautiful.notification_crit_bg,
-			fg = beautiful.notification_crit_fg,
-			border_width = beautiful.notification_border_width,
-			border_color = beautiful.notification_border_color,
-			icon = beautiful.notification_error,
-		}
-	}
+	-- Use XDG icon
+	local path = menubar.utils.lookup_icon(hints.app_icon) or menubar.utils.lookup_icon(hints.app_icon:lower())
+
+	if path then
+		n.icon = path
+	end
+end)
+
+-- Use XDG icon
+naughty.connect_signal("request::action_icon", function(a, context, hints)
+	a.icon = menubar.utils.lookup_icon(hints.id)
 end)
 
 naughty.connect_signal("request::display", function(n)
@@ -563,11 +554,7 @@ naughty.connect_signal("request::display", function(n)
 		n.app_icon = beautiful.notification_icon
 	end
 
-	if beautiful.notification_border_radius > 0 then
-		beautiful.notification_shape = helpers.rrect(beautiful.notification_border_radius)
-	end
-
-	naughty.layout.box {
+	naughty.layout.box({
 		notification = n,
 		type = "notification",
 		maximum_width = beautiful.notification_width,
@@ -599,30 +586,12 @@ naughty.connect_signal("request::display", function(n)
 							spacing = dpi(10),
 							naughty.widget.title,
 							naughty.widget.message,
-						}
-					}
-				}
-			}
-		}
-	}
-end)
-
--- Handle notification icon
-naughty.connect_signal("request::icon", function(n, context, hints)
-	-- Handle other contexts here
-	if context ~= "app_icon" then return end
-
-	-- Use XDG icon
-	local path = menubar.utils.lookup_icon(hints.app_icon) or menubar.utils.lookup_icon(hints.app_icon:lower())
-
-	if path then
-		n.icon = path
-	end
-end)
-
--- Use XDG icon
-naughty.connect_signal("request::action_icon", function(a, context, hints)
-	a.icon = menubar.utils.lookup_icon(hints.id)
+						},
+					},
+				},
+			},
+		},
+	})
 end)
 
 -- Autostart applications

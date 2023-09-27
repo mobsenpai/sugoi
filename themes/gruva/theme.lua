@@ -9,6 +9,7 @@ local xrdb = xresources.get_current_theme()
 local gears = require("gears")
 local gfs = require("gears.filesystem")
 local helpers = require("helpers")
+local rnotification = require("ruled.notification")
 local theme = {}
 
 -- Default wallpaper
@@ -93,52 +94,52 @@ theme.taglist_text_focused = { "", "", "", "", "", "", "[]=", 
 theme.taglist_text_urgent = { "", "", "", "", "", "", "", "", "", "" }
 
 theme.taglist_text_color_empty = {
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt,
-  theme.black_alt
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
+	theme.black_alt,
 }
 theme.taglist_text_color_occupied = {
-  theme.blue,
-  theme.green,
-  theme.yellow,
-  theme.red,
-  theme.cyan,
-  theme.magenta,
-  theme.cyan,
-  theme.cyan,
-  theme.cyan,
-  theme.cyan
+	theme.blue,
+	theme.green,
+	theme.yellow,
+	theme.red,
+	theme.cyan,
+	theme.magenta,
+	theme.cyan,
+	theme.cyan,
+	theme.cyan,
+	theme.cyan,
 }
 theme.taglist_text_color_focused = {
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus,
-  theme.fg_focus
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
+	theme.fg_focus,
 }
 theme.taglist_text_color_urgent = {
-  theme.blue,
-  theme.green,
-  theme.yellow,
-  theme.red,
-  theme.cyan,
-  theme.magenta,
-  theme.cyan,
-  theme.cyan,
-  theme.cyan,
-  theme.cyan
+	theme.blue,
+	theme.green,
+	theme.yellow,
+	theme.red,
+	theme.cyan,
+	theme.magenta,
+	theme.cyan,
+	theme.cyan,
+	theme.cyan,
+	theme.cyan,
 }
 
 -- Text Taglist (default)
@@ -221,9 +222,49 @@ theme.notification_width = dpi(300)
 theme.notification_height = dpi(300)
 theme.notification_position = "top_right"
 theme.notification_border_radius = theme.border_radius
-theme.notification_crit_bg = theme.bg_urgent
-theme.notification_crit_fg = theme.fg_urgent
 theme.notification_spacing = theme.screen_margin * 2
+theme.notification_shape = helpers.rrect(theme.notification_border_radius)
+theme.notification_icon = theme.wallpaper
+
+-- Set different colors for notifications.
+rnotification.connect_signal("request::rules", function()
+	rnotification.append_rule({
+		rule = { urgency = "critical" },
+		properties = {
+			implicit_timeout = 4,
+			bg = theme.bg_urgent,
+			fg = theme.fg_focus,
+			font = theme.notification_font,
+			position = theme.notification_position,
+			border_color = theme.notification_border_color,
+			margin = theme.notification_margin,
+		},
+	})
+	rnotification.append_rule({
+		rule = { urgency = "normal" },
+		properties = {
+			implicit_timeout = 4,
+			bg = theme.bg_normal,
+			fg = theme.fg_focus,
+			font = theme.notification_font,
+			position = theme.notification_position,
+			border_color = theme.notification_border_color,
+			margin = theme.notification_margin,
+		},
+	})
+	rnotification.append_rule({
+		rule = { urgency = "low" },
+		properties = {
+			implicit_timeout = 4,
+			bg = theme.bg_normal,
+			fg = theme.fg_focus,
+			font = theme.notification_font,
+			position = theme.notification_position,
+			border_color = theme.notification_border_color,
+			margin = theme.notification_margin,
+		},
+	})
+end)
 
 -- Misc
 -- ===================================================================
@@ -239,6 +280,12 @@ theme.snap_border_width = theme.widget_border_width
 
 -- Hotkeys popup
 theme.hotkeys_modifiers_fg = theme.blue
+
+-- Generate Awesome icon:
+theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.bg_focus, theme.fg_focus)
+-- Define the icon theme for application icons. If not set then the icons
+-- from /usr/share/icons and /usr/share/icons/hicolor will be used.
+theme.icon_theme = nil
 
 return theme
 -- EOF ------------------------------------------------------------------------
