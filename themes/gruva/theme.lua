@@ -53,13 +53,13 @@ theme.transparent = "#00000000"
 theme.bg_normal = theme.black
 theme.bg_focus = helpers.lighten(theme.cyan, -30)
 theme.bg_urgent = theme.red
-theme.bg_minimize = theme.black_alt
+theme.bg_minimize = theme.black
 
 -- Foreground Colors
 theme.fg_normal = theme.white
 theme.fg_focus = theme.white
 theme.fg_urgent = theme.white
-theme.fg_minimize = theme.black
+theme.fg_minimize = theme.black_alt
 
 --- ░█░█░▀█▀░░░█▀▀░█░░░█▀▀░█▄█░█▀▀░█▀█░▀█▀░█▀▀
 --- ░█░█░░█░░░░█▀▀░█░░░█▀▀░█░█░█▀▀░█░█░░█░░▀▀█
