@@ -22,13 +22,18 @@ local memory_widget = wibox.widget({
 	{
 		{
 			{
-				id = "icon",
-				text = "",
-				forced_width = dpi(30),
-				align = "center",
-				valign = "center",
-				font = beautiful.wibar_icon_font,
-				widget = wibox.widget.textbox,
+				{
+					id = "icon",
+					text = "",
+					forced_width = dpi(30),
+					align = "center",
+					valign = "center",
+					font = beautiful.wibar_icon_font,
+					widget = wibox.widget.textbox,
+				},
+				-- fixing font centering
+				right = dpi(3),
+				widget = wibox.container.margin,
 			},
 			bg = beautiful.darkblue,
 			fg = beautiful.light_bg,
@@ -61,13 +66,18 @@ local clock_widget = wibox.widget({
 	{
 		{
 			{
-				id = "icon",
-				text = "󱑆",
-				forced_width = dpi(30),
-				align = "center",
-				valign = "center",
-				font = beautiful.wibar_icon_font,
-				widget = wibox.widget.textbox,
+				{
+					id = "icon",
+					text = "󱑆",
+					forced_width = dpi(30),
+					align = "center",
+					valign = "center",
+					font = beautiful.wibar_icon_font,
+					widget = wibox.widget.textbox,
+				},
+				-- fixing font centering
+				right = dpi(3),
+				widget = wibox.container.margin,
 			},
 			bg = beautiful.darkgreen,
 			fg = beautiful.light_bg,
@@ -97,13 +107,18 @@ local cpu_widget = wibox.widget({
 	{
 		{
 			{
-				id = "icon",
-				text = "",
-				forced_width = dpi(30),
-				align = "center",
-				valign = "center",
-				font = beautiful.wibar_icon_font,
-				widget = wibox.widget.textbox,
+				{
+					id = "icon",
+					text = "",
+					forced_width = dpi(30),
+					align = "center",
+					valign = "center",
+					font = beautiful.wibar_icon_font,
+					widget = wibox.widget.textbox,
+				},
+				-- fixing font centering
+				right = dpi(5),
+				widget = wibox.container.margin,
 			},
 			bg = beautiful.cyan,
 			fg = beautiful.light_bg,
@@ -363,24 +378,6 @@ end)
 -- ░█░█░▀█▀░█▀▄░█▀█░█▀▄
 -- ░█▄█░░█░░█▀▄░█▀█░█▀▄
 -- ░▀░▀░▀▀▀░▀▀░░▀░▀░▀░▀
-
--- Helper function that updates a taglist item
-local update_taglist = function(item, tag, index)
-	if tag.selected then
-		item.markup =
-			helpers.colorize_text(beautiful.taglist_text_focused[index], beautiful.taglist_text_color_focused[index])
-	elseif tag.urgent then
-		item.markup =
-			helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
-	elseif #tag:clients() > 0 then
-		item.markup =
-			helpers.colorize_text(beautiful.taglist_text_occupied[index], beautiful.taglist_text_color_occupied[index])
-	else
-		item.markup =
-			helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
-	end
-end
-
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
 	-- Create a promptbox for each screen
@@ -403,6 +400,33 @@ awful.screen.connect_for_each_screen(function(s)
 		end)
 	))
 
+	-- Helper function that updates a taglist item
+	local update_taglist = function(self, tag, index)
+		local tagBox = self:get_children_by_id("underline")[1]
+		local tagName = self:get_children_by_id("index_role")[1]
+		if tag.selected then
+			tagName.markup = helpers.colorize_text(
+				beautiful.taglist_text_focused[index],
+				beautiful.taglist_text_color_focused[index]
+			)
+			tagBox.bg = beautiful.taglist_text_color_occupied[index]
+		elseif tag.urgent then
+			tagName.markup =
+				helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
+			tagBox.bg = beautiful.wibar_bg
+		elseif #tag:clients() > 0 then
+			tagName.markup = helpers.colorize_text(
+				beautiful.taglist_text_occupied[index],
+				beautiful.taglist_text_color_occupied[index]
+			)
+			tagBox.bg = beautiful.wibar_bg
+		else
+			tagName.markup =
+				helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
+			tagBox.bg = beautiful.wibar_bg
+		end
+	end
+
 	-- Create a taglist widget
 	s.mytaglist = awful.widget.taglist({
 		screen = s,
@@ -410,18 +434,43 @@ awful.screen.connect_for_each_screen(function(s)
 		layout = wibox.layout.fixed.horizontal,
 		buttons = keys.taglist_buttons,
 		widget_template = {
-			widget = wibox.widget.textbox,
-			create_callback = function(self, tag, index, _)
-				self.align = "center"
-				self.valign = "center"
-				self.forced_width = dpi(25)
-				self.font = beautiful.taglist_text_font
-
-				update_taglist(self, tag, index)
-			end,
-			update_callback = function(self, tag, index, _)
-				update_taglist(self, tag, index)
-			end,
+			{
+				{
+					layout = wibox.layout.fixed.vertical,
+					{
+						{
+							id = "index_role",
+							font = beautiful.taglist_text_font,
+							align = "center",
+							valign = "center",
+							forced_width = dpi(24),
+							widget = wibox.widget.textbox,
+						},
+						top = dpi(0),
+						right = dpi(4),
+						bottom = dpi(-1),
+						widget = wibox.container.margin,
+					},
+					{
+						{
+							top = dpi(0),
+							bottom = dpi(3),
+							widget = wibox.container.margin,
+						},
+						id = "underline",
+						bg = beautiful.wibar_bg,
+						shape = gears.shape.rectangle,
+						widget = wibox.container.background,
+					},
+				},
+				widget = wibox.container.margin,
+				right = dpi(4),
+			},
+			id = "background_role",
+			widget = wibox.container.background,
+			shape = gears.shape.rectangle,
+			create_callback = update_taglist,
+			update_callback = update_taglist,
 		},
 	})
 
@@ -533,6 +582,7 @@ end)
 naughty.connect_signal("request::icon", function(n, context, hints)
 	-- Handle other contexts here
 	if context ~= "app_icon" then
+		n.icon = beautiful.notification_icon
 		return
 	end
 
@@ -544,16 +594,7 @@ naughty.connect_signal("request::icon", function(n, context, hints)
 	end
 end)
 
--- Use XDG icon
-naughty.connect_signal("request::action_icon", function(a, context, hints)
-	a.icon = menubar.utils.lookup_icon(hints.id)
-end)
-
 naughty.connect_signal("request::display", function(n)
-	if not n.app_icon then
-		n.app_icon = beautiful.notification_icon
-	end
-
 	naughty.layout.box({
 		notification = n,
 		type = "notification",

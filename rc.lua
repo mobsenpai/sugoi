@@ -19,7 +19,7 @@ user = {
 	visual_editor = "codium",
 	openweathermap_key = "d1b3b6a81db867259446b0863d5f9108",
 	openweathermap_city_id = {
-		"25.6",  --- lat
+		"25.6", --- lat
 		"85.1167", --- lon
 	},
 	openweathermap_weather_units = "metric",
@@ -66,22 +66,30 @@ apps = {
 		awful.spawn(user.file_manager, { floating = true })
 	end,
 	term_filemanager = function()
-		helpers.run_or_raise({ instance = 'ranger' }, false, user.terminal .. " --class ranger -e ranger")
+		helpers.run_or_raise({ instance = "ranger" }, false, user.terminal .. " --class ranger -e ranger")
 	end,
 	editor = function()
-		helpers.run_or_raise({ instance = 'editor' }, false, user.terminal .. " --class editor  -e " .. user.editor,
-			{ switchtotag = true })
+		helpers.run_or_raise(
+			{ instance = "editor" },
+			false,
+			user.terminal .. " --class editor  -e " .. user.editor,
+			{ switchtotag = true }
+		)
 	end,
 	visual_editor = function()
-		helpers.run_or_raise({ class = 'VSCodium' }, false, user.visual_editor, { switchtotag = true })
+		helpers.run_or_raise({ class = "VSCodium" }, false, user.visual_editor, { switchtotag = true })
 	end,
 	volume = function()
-		helpers.run_or_raise({ class = 'Pavucontrol' }, true, "pavucontrol")
+		helpers.run_or_raise({ class = "Pavucontrol" }, true, "pavucontrol")
 	end,
 	process_monitor = function()
-		helpers.run_or_raise({ instance = 'gotop' }, false, user.terminal .. " --class gotop -e gotop",
-			{ switchtotag = true })
-	end
+		helpers.run_or_raise(
+			{ instance = "gotop" },
+			false,
+			user.terminal .. " --class gotop -e gotop",
+			{ switchtotag = true }
+		)
+	end,
 }
 
 -- Confuguration folder
@@ -238,7 +246,7 @@ awful.rules.rules = {
 			maximized_horizontal = false,
 			maximized_vertical = false,
 			placement = floating_client_placement,
-		}
+		},
 	},
 
 	-- Floating clients

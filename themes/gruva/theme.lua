@@ -118,16 +118,16 @@ theme.taglist_text_color_occupied = {
 	theme.cyan,
 }
 theme.taglist_text_color_focused = {
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
-	theme.fg_focus,
+	theme.blue,
+	theme.green,
+	theme.yellow,
+	theme.red,
+	theme.cyan,
+	theme.magenta,
+	theme.cyan,
+	theme.cyan,
+	theme.cyan,
+	theme.cyan,
 }
 theme.taglist_text_color_urgent = {
 	theme.blue,
