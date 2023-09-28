@@ -769,7 +769,7 @@ function decorations.show(c)
 	end
 end
 
--- Add a template titlebar
+-- Dummy titlebar
 client.connect_signal("request::titlebars", function(c)
 	awful.titlebar(c)
 end)
