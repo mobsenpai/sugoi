@@ -22,11 +22,29 @@ local shift = "Shift"
 -- =============================================
 local menu = {}
 menu.awesome = {
-	{ "Hotkeys",     function() return false, hotkeys_popup.show_help end },
-	{ "Manual",      user.terminal .. " -e man awesome" },
-	{ "Edit config", string.format("%s -e %s %s", user.terminal, user.terminal .. " -e " .. user.editor, awesome.conffile) },
-	{ "Restart",     function() awesome.restart() end },
-	{ "Quit",        function() awesome.quit() end },
+	{
+		"Hotkeys",
+		function()
+			return false, hotkeys_popup.show_help
+		end,
+	},
+	{ "Manual", user.terminal .. " -e man awesome" },
+	{
+		"Edit config",
+		string.format("%s -e %s %s", user.terminal, user.terminal .. " -e " .. user.editor, awesome.conffile),
+	},
+	{
+		"Restart",
+		function()
+			awesome.restart()
+		end,
+	},
+	{
+		"Quit",
+		function()
+			awesome.quit()
+		end,
+	},
 }
 
 menu.mainmenu = awful.menu({
@@ -37,7 +55,12 @@ menu.mainmenu = awful.menu({
 		{ "  Editor", user.terminal .. " -e " .. user.editor },
 		{ "󰨞  GUI Editor", user.visual_editor },
 		{ "  AwesomeWM", menu.awesome },
-		{ " Notifications", function() awesome.emit_signal("summon::notif_center") end },
+		{
+			" Notifications",
+			function()
+				awesome.emit_signal("summon::notif_center")
+			end,
+		},
 	},
 })
 
@@ -73,22 +96,26 @@ keys.desktopbuttons = gears.table.join(
 	-- awful.button({ }, 5, awful.tag.viewnext),
 
 	-- Side buttons - Control volume
-	awful.button({}, 8, function() helpers.volume_control(-5) end),
-	awful.button({}, 9, function() helpers.volume_control(5) end)
+	awful.button({}, 8, function()
+		helpers.volume_control(-5)
+	end),
+	awful.button({}, 9, function()
+		helpers.volume_control(5)
+	end)
 
--- Side buttons - Minimize and restore minimized client
--- awful.button({}, 8, function()
--- 	if client.focus ~= nil then
--- 		client.focus.minimized = true
--- 	end
--- end),
--- awful.button({}, 9, function()
--- 	local c = awful.client.restore()
--- 	-- Focus restored client
--- 	if c then
--- 		client.focus = c
--- 	end
--- end)
+	-- Side buttons - Minimize and restore minimized client
+	-- awful.button({}, 8, function()
+	-- 	if client.focus ~= nil then
+	-- 		client.focus.minimized = true
+	-- 	end
+	-- end),
+	-- awful.button({}, 9, function()
+	-- 	local c = awful.client.restore()
+	-- 	-- Focus restored client
+	-- 	if c then
+	-- 		client.focus = c
+	-- 	end
+	-- end)
 )
 
 -- Global bindings
@@ -139,8 +166,7 @@ keys.globalkeys = gears.table.join(
 	end, { description = "next layout", group = "tag" }),
 	awful.key({ mod, shift }, "space", function()
 		awful.layout.inc(-1)
-	end, { description = "previous layout", group = "tag" }
-	),
+	end, { description = "previous layout", group = "tag" }),
 
 	-- Tag switcher
 	awful.key({ mod }, "Tab", function()
@@ -210,11 +236,13 @@ keys.globalkeys = gears.table.join(
 
 	-- Spawn floating terminal
 	awful.key({ mod, shift }, "Return", function()
-		awful.spawn(user.floating_terminal, { floating = true })
+		awful.spawn(apps.floating_terminal, { floating = true })
 	end, { description = "spawn floating terminal", group = "launcher" }),
 
 	-- Reload Awesome
-	awful.key({ mod, shift }, "r", function() awesome.restart() end, { description = "reload awesome", group = "awesome" }),
+	awful.key({ mod, shift }, "r", function()
+		awesome.restart()
+	end, { description = "reload awesome", group = "awesome" }),
 
 	-- Quit Awesome
 	awful.key({ mod, shift }, "q", function()
@@ -259,7 +287,7 @@ keys.globalkeys = gears.table.join(
 
 	-- Scratchpad terminal with tmux
 	awful.key({ mod }, "s", function()
-		helpers.scratchpad({ instance = "scratchpad" }, user.scratchpad_terminal, nil)
+		helpers.scratchpad({ instance = "scratchpad" }, apps.scratchpad_terminal, nil)
 	end, { description = "scratchpad", group = "launcher" }),
 
 	-- Screen Shots/Vids
@@ -293,30 +321,25 @@ keys.globalkeys = gears.table.join(
 	end, { description = "show help", group = "awesome" }),
 
 	-- Volume control with volume keys
-	awful.key({}, "XF86AudioMute",
-		function()
-			helpers.volume_control(0)
-		end, { description = "(un)mute volume", group = "volume" }),
-	awful.key({}, "XF86AudioLowerVolume",
-		function()
-			helpers.volume_control(-5)
-			awesome.emit_signal("summon::osd")
-		end, { description = "lower volume", group = "volume" }),
-	awful.key({}, "XF86AudioRaiseVolume",
-		function()
-			helpers.volume_control(5)
-			awesome.emit_signal("summon::osd")
-		end, { description = "raise volume", group = "volume" }),
+	awful.key({}, "XF86AudioMute", function()
+		helpers.volume_control(0)
+	end, { description = "(un)mute volume", group = "volume" }),
+	awful.key({}, "XF86AudioLowerVolume", function()
+		helpers.volume_control(-5)
+		awesome.emit_signal("summon::osd")
+	end, { description = "lower volume", group = "volume" }),
+	awful.key({}, "XF86AudioRaiseVolume", function()
+		helpers.volume_control(5)
+		awesome.emit_signal("summon::osd")
+	end, { description = "raise volume", group = "volume" }),
 
 	-- Brightness control with brightness keys
-	awful.key({}, "XF86MonBrightnessUp",
-		function()
-			awful.spawn("brightnessctl s +5%")
-		end, { description = "increase brightness", group = "brightness" }),
-	awful.key({}, "XF86MonBrightnessDown",
-		function()
-			awful.spawn("brightnessctl s 5%-")
-		end, { description = "increase brightness", group = "brightness" }),
+	awful.key({}, "XF86MonBrightnessUp", function()
+		awful.spawn("brightnessctl s +5%")
+	end, { description = "increase brightness", group = "brightness" }),
+	awful.key({}, "XF86MonBrightnessDown", function()
+		awful.spawn("brightnessctl s 5%-")
+	end, { description = "increase brightness", group = "brightness" }),
 
 	-- Lockscreen
 	awful.key({ mod, alt }, "l", function()
@@ -348,7 +371,7 @@ keys.globalkeys = gears.table.join(
 -- Client related bindings
 -- =============================================
 keys.clientkeys = gears.table.join(
--- Swap by direction
+	-- Swap by direction
 	awful.key({ mod, shift }, "j", function()
 		awful.client.swap.bydirection("down")
 	end),
@@ -396,20 +419,19 @@ keys.clientkeys = gears.table.join(
 	end, { description = "toggle floating", group = "client" }),
 
 	-- Set master
-	awful.key({ mod, ctrl }, "Return", function(c) c:swap(awful.client.getmaster()) end,
-		{ description = "move to master", group = "client" }),
+	awful.key({ mod, ctrl }, "Return", function(c)
+		c:swap(awful.client.getmaster())
+	end, { description = "move to master", group = "client" }),
 
 	-- P for pin: keep on top OR sticky
 	-- On top
 	awful.key({ mod, shift }, "p", function(c)
-			c.ontop = not c.ontop
-		end,
-		{ description = "toggle keep on top", group = "client" }),
+		c.ontop = not c.ontop
+	end, { description = "toggle keep on top", group = "client" }),
 	-- Sticky
 	awful.key({ mod, ctrl }, "p", function(c)
-			c.sticky = not c.sticky
-		end,
-		{ description = "toggle sticky", group = "client" }),
+		c.sticky = not c.sticky
+	end, { description = "toggle sticky", group = "client" }),
 
 	-- Minimize
 	awful.key({ mod }, "n", function(c)
@@ -444,13 +466,13 @@ keys.clientbuttons = gears.table.join(
 		-- awful.mouse.resize(c, nil, {jump_to_corner=true})
 	end)
 
--- Super + scroll = Change client opacity
--- awful.button({ mod }, 4, function(c)
--- 	c.opacity = c.opacity + 0.1
--- end),
--- awful.button({ mod }, 5, function(c)
--- 	c.opacity = c.opacity - 0.1
--- end)
+	-- Super + scroll = Change client opacity
+	-- awful.button({ mod }, 4, function(c)
+	-- 	c.opacity = c.opacity + 0.1
+	-- end),
+	-- awful.button({ mod }, 5, function(c)
+	-- 	c.opacity = c.opacity - 0.1
+	-- end)
 )
 
 -- Mouse buttons on the tasklist

@@ -11,6 +11,7 @@ local menubar = require("menubar")
 local keys = require("keys")
 local helpers = require("helpers")
 local awesome = awesome
+local client = client
 
 -- ░█░█░▀█▀░█▀▄░█▀▀░█▀▀░▀█▀░█▀▀
 -- ░█▄█░░█░░█░█░█░█░█▀▀░░█░░▀▀█
@@ -633,6 +634,64 @@ naughty.connect_signal("request::display", function(n)
 			},
 		},
 	})
+end)
+
+-- Titlebar
+-- =============================================
+client.connect_signal("request::titlebars", function(c)
+	local titlebar = awful.titlebar(c, {
+		position = beautiful.titlebar_position,
+		size = beautiful.titlebar_size,
+	})
+
+	local buttons = gears.table.join(
+		awful.button({}, 1, function()
+			client.focus = c
+			c:raise()
+			awful.mouse.client.move(c)
+		end),
+		awful.button({}, 3, function()
+			client.focus = c
+			c:raise()
+			awful.mouse.client.resize(c)
+		end)
+	)
+
+	titlebar.widget = {
+		layout = wibox.layout.flex.horizontal,
+		-- {
+		-- 	widget = wibox.container.place,
+		-- 	align = "left",
+		-- 	{
+		-- 		widget = wibox.container.margin,
+		-- 		margins = { left = dpi(10), right = dpi(10) top = dpi(8), bottom = dpi(8) },
+		-- 		{
+		-- 			layout = wibox.layout.fixed.horizontal,
+		-- 			spacing = 8,
+		-- 			awful.titlebar.widget.maximizedbutton(c),
+		-- 			awful.titlebar.widget.minimizebutton(c),
+		-- 			awful.titlebar.widget.closebutton(c),
+		-- 		},
+		-- 	},
+		-- },
+		{
+			widget = wibox.container.background,
+			buttons = buttons,
+			{
+				widget = wibox.container.margin,
+        left = dpi(10),
+				right = dpi(10),
+				{
+					widget = wibox.container.constraint,
+					width = dpi(100),
+					{
+						align = beautiful.titlebar_title_align,
+						widget = awful.titlebar.widget.titlewidget(c),
+					},
+				},
+			},
+		},
+	}
 end)
 
 -- Autostart applications

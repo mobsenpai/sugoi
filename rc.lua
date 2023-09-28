@@ -10,11 +10,9 @@ local decorations = {}
 -- User variables and preferences
 -- =============================================
 user = {
-	terminal = "kitty",
-	floating_terminal = "kitty --class floating_terminal",
-	scratchpad_terminal = "kitty --class scratchpad",
+	terminal = os.getenv("TERMINAL") or "kitty",
 	editor = os.getenv("EDITOR") or "nano",
-	browser = "vivaldi",
+	browser = os.getenv("BROWSER") or "vivaldi",
 	file_manager = "pcmanfm",
 	visual_editor = "codium",
 	openweathermap_key = "d1b3b6a81db867259446b0863d5f9108",
@@ -59,6 +57,8 @@ end)
 local helpers = require("helpers")
 -- Apps
 apps = {
+	floating_terminal = user.terminal .. " --class floating_terminal",
+	scratchpad_terminal = user.terminal .. " --class scratchpad",
 	browser = function()
 		awful.spawn(user.browser, { switchtotag = true })
 	end,
