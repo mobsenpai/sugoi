@@ -77,8 +77,10 @@ function helpers.volume_control(step)
 		cmd = "pactl set-sink-mute @DEFAULT_SINK@ toggle"
 	else
 		sign = step > 0 and "+" or ""
-		cmd = "pactl set-sink-mute @DEFAULT_SINK@ 0 && pactl set-sink-volume @DEFAULT_SINK@ " ..
-				sign .. tostring(step) .. "%"
+		cmd = "pactl set-sink-mute @DEFAULT_SINK@ 0 && pactl set-sink-volume @DEFAULT_SINK@ "
+			.. sign
+			.. tostring(step)
+			.. "%"
 	end
 	awful.spawn.with_shell(cmd)
 end
@@ -92,9 +94,13 @@ end
 -- Lighten or darken hex colors
 -- =============================================
 -- Rounds to whole number
-local function round(num) return math.floor(num + 0.5) end
+local function round(num)
+	return math.floor(num + 0.5)
+end
 -- Rounds to hundredths
-local function roundH(num) return math.floor((num * 100) + 0.5) / 100 end
+local function roundH(num)
+	return math.floor((num * 100) + 0.5) / 100
+end
 
 -- Converts hexadecimal color to HSL
 -- Lightness (L) is changed based on amt
@@ -117,7 +123,9 @@ function helpers.lighten(hex_color, amt)
 	r = tonumber(hex:sub(1, 2), 16) / 255
 	g = tonumber(hex:sub(3, 4), 16) / 255
 	b = tonumber(hex:sub(5, 6), 16) / 255
-	if #hex ~= 6 then a = roundH(tonumber(hex:sub(7, 8), 16) / 255) end
+	if #hex ~= 6 then
+		a = roundH(tonumber(hex:sub(7, 8), 16) / 255)
+	end
 
 	local max = math.max(r, g, b)
 	local min = math.min(r, g, b)
@@ -166,11 +174,21 @@ function helpers.lighten(hex_color, amt)
 		R, G, B = round(L * 255), round(L * 255), round(L * 255)
 	else
 		local function hue2rgb(p, q, t)
-			if t < 0 then t = t + 1 end
-			if t > 1 then t = t - 1 end
-			if t < 1 / 6 then return p + (q - p) * (6 * t) end
-			if t < 1 / 2 then return q end
-			if t < 2 / 3 then return p + (q - p) * (2 / 3 - t) * 6 end
+			if t < 0 then
+				t = t + 1
+			end
+			if t > 1 then
+				t = t - 1
+			end
+			if t < 1 / 6 then
+				return p + (q - p) * (6 * t)
+			end
+			if t < 1 / 2 then
+				return q
+			end
+			if t < 2 / 3 then
+				return p + (q - p) * (2 / 3 - t) * 6
+			end
 			return p
 		end
 		local q
@@ -187,9 +205,9 @@ function helpers.lighten(hex_color, amt)
 
 	if a ~= nil then
 		A = round(a * 255)
-		return string.format("#" .. '%.2x%.2x%.2x%.2x', R, G, B, A)
+		return string.format("#" .. "%.2x%.2x%.2x%.2x", R, G, B, A)
 	else
-		return string.format("#" .. '%.2x%.2x%.2x', R, G, B)
+		return string.format("#" .. "%.2x%.2x%.2x", R, G, B)
 	end
 end
 
