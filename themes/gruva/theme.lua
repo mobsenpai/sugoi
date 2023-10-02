@@ -10,7 +10,10 @@ local gears = require("gears")
 local gfs = require("gears.filesystem")
 local helpers = require("helpers")
 local rnotification = require("ruled.notification")
-local theme = {}
+local themes_path = gfs.get_themes_dir()
+
+local theme = dofile(themes_path .. "default/theme.lua") -- for layoutbox icons
+-- local theme = {}
 
 -- Default wallpaper
 theme.wallpaper = os.getenv("HOME") .. "/Pictures/wall.png"
@@ -224,7 +227,6 @@ theme.notification_position = "top_right"
 theme.notification_border_radius = theme.border_radius
 theme.notification_spacing = theme.screen_margin * 2
 theme.notification_shape = helpers.rrect(theme.notification_border_radius)
-theme.notification_icon = theme.wallpaper
 
 -- Set different colors for notifications.
 rnotification.connect_signal("request::rules", function()
@@ -269,7 +271,7 @@ end)
 -- Misc
 -- ===================================================================
 -- Recolor Layout icons
-theme = theme_assets.recolor_layout(theme, theme.fg_normal)
+theme = theme_assets.recolor_layout(theme, theme.red)
 theme.layoutlist_shape_selected = gears.shape.rounded_rect
 theme.layoutlist_bg_selected = theme.bg_focus
 

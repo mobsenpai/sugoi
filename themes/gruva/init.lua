@@ -381,26 +381,35 @@ end)
 -- ░▀░▀░▀▀▀░▀▀░░▀░▀░▀░▀
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
-	-- Create a promptbox for each screen
-	s.mypromptbox = awful.widget.prompt({ prompt = " Run: ", fg = beautiful.fg_normal })
 	-- Create an imagebox widget which will contain an icon indicating which layout we're using.
 	-- We need one layoutbox per screen.
-	s.mylayoutbox = awful.widget.layoutbox(s)
-	s.mylayoutbox:buttons(gears.table.join(
-		awful.button({}, 1, function()
-			awful.layout.inc(1)
-		end),
-		awful.button({}, 3, function()
-			awful.layout.inc(-1)
-		end),
-		awful.button({}, 4, function()
-			awful.layout.inc(1)
-		end),
-		awful.button({}, 5, function()
-			awful.layout.inc(-1)
-		end)
-	))
+	s.mylayoutbox = {
+		widget = wibox.container.place,
+		awful.widget.layoutbox({
+			screen = s,
+			resize = true,
+			forced_width = dpi(15),
+			forced_height = dpi(15),
+			widget = wibox.container.place,
+			-- Add buttons, allowing you to change the layout
+			buttons = {
+				awful.button({}, 1, function()
+					awful.layout.inc(1)
+				end),
+				awful.button({}, 3, function()
+					awful.layout.inc(-1)
+				end),
+				awful.button({}, 4, function()
+					awful.layout.inc(1)
+				end),
+				awful.button({}, 5, function()
+					awful.layout.inc(-1)
+				end),
+			},
+		}),
+	}
 
+	-- Create a taglist widget
 	-- Helper function that updates a taglist item
 	local update_taglist = function(self, tag, index)
 		local tagBox = self:get_children_by_id("underline")[1]
@@ -428,7 +437,6 @@ awful.screen.connect_for_each_screen(function(s)
 		end
 	end
 
-	-- Create a taglist widget
 	s.mytaglist = awful.widget.taglist({
 		screen = s,
 		filter = awful.widget.taglist.filter.all,
@@ -527,6 +535,7 @@ awful.screen.connect_for_each_screen(function(s)
 	s.mywibox = awful.wibar({
 		position = beautiful.wibar_position,
 		screen = s,
+		type = "dock",
 		width = beautiful.wibar_width,
 		height = beautiful.wibar_height,
 		shape = helpers.rrect(beautiful.wibar_border_radius),
@@ -536,7 +545,6 @@ awful.screen.connect_for_each_screen(function(s)
 		{
 			{
 				s.mytaglist,
-				s.mypromptbox,
 				s.mytasklist,
 				align = "left",
 				spacing = dpi(10),
@@ -555,6 +563,7 @@ awful.screen.connect_for_each_screen(function(s)
 				cpu_widget,
 				clock_widget,
 				s.systray,
+				s.mylayoutbox,
 				align = "right",
 				spacing = dpi(10),
 				layout = wibox.layout.fixed.horizontal,
@@ -583,7 +592,7 @@ end)
 naughty.connect_signal("request::icon", function(n, context, hints)
 	-- Handle other contexts here
 	if context ~= "app_icon" then
-		n.icon = beautiful.notification_icon
+		n.icon = beautiful.awesome_icon
 		return
 	end
 
@@ -615,8 +624,7 @@ naughty.connect_signal("request::display", function(n)
 						spacing = dpi(20),
 						fill_space = true,
 						{
-							widget = wibox.container.margin,
-							margins = { bottom = dpi(10), top = dpi(10) },
+							widget = wibox.container.place,
 							{
 								widget = wibox.container.background,
 								shape = gears.shape.circle,
@@ -679,7 +687,7 @@ client.connect_signal("request::titlebars", function(c)
 			buttons = buttons,
 			{
 				widget = wibox.container.margin,
-        left = dpi(10),
+				left = dpi(10),
 				right = dpi(10),
 				{
 					widget = wibox.container.constraint,
