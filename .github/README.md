@@ -3,7 +3,7 @@
 <!-- RICE PREVIEW -->
 <div align="center">
    <a href="#--------">
-      <img src="https://i.imgur.com/ugwci71.png" alt="Rice Preview">
+      <img src="https://i.imgur.com/HWd34GJ.png" alt="Rice Preview">
    </a>
 </div>
 
