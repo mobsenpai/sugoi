@@ -17,8 +17,8 @@ user = {
 	visual_editor = "codium",
 	openweathermap_key = "d1b3b6a81db867259446b0863d5f9108",
 	openweathermap_city_id = {
-		"25.6", --- lat
-		"85.1167", --- lon
+		"25.6", -- lat
+		"85.1167", -- lon
 	},
 	openweathermap_weather_units = "metric",
 	lock_screen_custom_password = "awesome",
@@ -780,4 +780,9 @@ end)
 -- awful.spawn.once({}, false)
 -- With shell
 -- awful.spawn.with_shell({}, false)
+
+-- Garbage collection
+-- ===================================================================
+collectgarbage("setpause", 110)
+collectgarbage("setstepmul", 1000)
 -- EOF ------------------------------------------------------------------------

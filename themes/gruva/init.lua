@@ -306,15 +306,15 @@ local info = wibox.widget({
 	layout = wibox.layout.fixed.horizontal,
 	{
 		widget = wibox.container.margin,
-		margins = 20,
+		margins = dpi(20),
 		{
 			layout = wibox.layout.fixed.horizontal,
 			fill_space = true,
-			spacing = 8,
+			spacing = dpi(8),
 			icon_widget,
 			{
 				widget = wibox.container.background,
-				forced_width = 36,
+				forced_width = dpi(36),
 				text,
 			},
 			slider,
@@ -328,12 +328,12 @@ local osd = awful.popup({
 	ontop = true,
 	border_width = beautiful.widget_border_width,
 	border_color = beautiful.widget_border_color,
-	minimum_height = 60,
-	maximum_height = 60,
-	minimum_width = 290,
-	maximum_width = 290,
-	placement = function(d)
-		awful.placement.bottom(d, { margins = 20 + beautiful.border_width * 2 })
+	minimum_height = dpi(60),
+	maximum_height = dpi(60),
+	minimum_width = dpi(290),
+	maximum_width = dpi(290),
+	placement = function(c)
+		awful.placement.bottom(c, { margins = dpi(20) + beautiful.border_width * 2 })
 	end,
 	widget = info,
 })
@@ -505,7 +505,7 @@ awful.screen.connect_for_each_screen(function(s)
 							id = "icon_role",
 							widget = wibox.widget.imagebox,
 						},
-						margins = 2,
+						margins = dpi(2),
 						widget = wibox.container.margin,
 					},
 					{
@@ -515,8 +515,8 @@ awful.screen.connect_for_each_screen(function(s)
 					layout = wibox.layout.fixed.horizontal,
 				},
 				forced_width = dpi(220),
-				left = 10,
-				right = 10,
+				left = dpi(10),
+				right = dpi(10),
 				widget = wibox.container.margin,
 			},
 			-- border_width = dpi(2),
@@ -608,8 +608,10 @@ naughty.connect_signal("request::display", function(n)
 	naughty.layout.box({
 		notification = n,
 		type = "notification",
-		maximum_width = beautiful.notification_width,
-		maximum_height = beautiful.notification_height,
+		cursor = "hand1",
+		shape = beautiful.notification_shape,
+		maximum_width = beautiful.notification_max_width,
+		maximum_height = beautiful.notification_max_height,
 		widget_template = {
 			widget = wibox.container.constraint,
 			strategy = "max",
@@ -705,4 +707,6 @@ end)
 -- Autostart applications
 -- =============================================
 -- awful.spawn.once({},false)
+-- With shell
+-- awful.spawn.with_shell({}, false)
 -- EOF ------------------------------------------------------------------------
