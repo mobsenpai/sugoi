@@ -30,7 +30,7 @@ theme.wibar_icon_font = theme.font_name .. "12"
 -- ░█░░░█░█░█░░░█░█░█▀▄░▀▀█
 -- ░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 
--- new colors
+-- Colors
 theme.black = xrdb.color0
 theme.black_alt = xrdb.color8
 theme.red = xrdb.color1
@@ -52,13 +52,13 @@ theme.transparent = "#00000000"
 
 -- Background Colors
 theme.bg_normal = theme.black
-theme.bg_focus = helpers.lighten(theme.cyan, -30)
+theme.bg_focus = theme.blue
 theme.bg_urgent = theme.red
 theme.bg_minimize = theme.black
 
 -- Foreground Colors
 theme.fg_normal = theme.white
-theme.fg_focus = theme.white
+theme.fg_focus = theme.black
 theme.fg_urgent = theme.white
 theme.fg_minimize = theme.black_alt
 
@@ -165,7 +165,7 @@ theme.tasklist_font = theme.font
 theme.tasklist_disable_icon = false
 theme.tasklist_plain_task_name = true
 theme.tasklist_bg_focus = theme.wibar_bg
-theme.tasklist_fg_focus = theme.fg_focus
+theme.tasklist_fg_focus = theme.fg_normal
 theme.tasklist_bg_normal = theme.wibar_bg
 theme.tasklist_fg_normal = theme.black_alt
 theme.tasklist_bg_minimize = theme.bg_minimize
@@ -233,7 +233,7 @@ rnotification.connect_signal("request::rules", function()
 		properties = {
 			implicit_timeout = 4,
 			bg = theme.bg_urgent,
-			fg = theme.fg_focus,
+			fg = theme.fg_urgent,
 			font = theme.notification_font,
 			position = theme.notification_position,
 			border_color = theme.notification_border_color,
@@ -245,7 +245,7 @@ rnotification.connect_signal("request::rules", function()
 		properties = {
 			implicit_timeout = 4,
 			bg = theme.bg_normal,
-			fg = theme.fg_focus,
+			fg = theme.fg_normal,
 			font = theme.notification_font,
 			position = theme.notification_position,
 			border_color = theme.notification_border_color,
@@ -257,7 +257,7 @@ rnotification.connect_signal("request::rules", function()
 		properties = {
 			implicit_timeout = 4,
 			bg = theme.bg_normal,
-			fg = theme.fg_focus,
+			fg = theme.fg_normal,
 			font = theme.notification_font,
 			position = theme.notification_position,
 			border_color = theme.notification_border_color,
