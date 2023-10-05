@@ -103,19 +103,19 @@ keys.desktopbuttons = gears.table.join(
 		helpers.volume_control(5)
 	end)
 
-	-- Side buttons - Minimize and restore minimized client
-	-- awful.button({}, 8, function()
-	-- 	if client.focus ~= nil then
-	-- 		client.focus.minimized = true
-	-- 	end
-	-- end),
-	-- awful.button({}, 9, function()
-	-- 	local c = awful.client.restore()
-	-- 	-- Focus restored client
-	-- 	if c then
-	-- 		client.focus = c
-	-- 	end
-	-- end)
+-- Side buttons - Minimize and restore minimized client
+-- awful.button({}, 8, function()
+-- 	if client.focus ~= nil then
+-- 		client.focus.minimized = true
+-- 	end
+-- end),
+-- awful.button({}, 9, function()
+-- 	local c = awful.client.restore()
+-- 	-- Focus restored client
+-- 	if c then
+-- 		client.focus = c
+-- 	end
+-- end)
 )
 
 -- Global bindings
@@ -236,7 +236,7 @@ keys.globalkeys = gears.table.join(
 
 	-- Spawn floating terminal
 	awful.key({ mod, shift }, "Return", function()
-		awful.spawn(apps.floating_terminal, { floating = true })
+		awful.spawn(user.floating_terminal, { floating = true })
 	end, { description = "spawn floating terminal", group = "launcher" }),
 
 	-- Reload Awesome
@@ -287,33 +287,25 @@ keys.globalkeys = gears.table.join(
 
 	-- Scratchpad terminal with tmux
 	awful.key({ mod }, "s", function()
-		helpers.scratchpad({ instance = "scratchpad" }, apps.scratchpad_terminal, nil)
+		helpers.scratchpad({ instance = "scratchpad" }, user.scratchpad_terminal, nil)
 	end, { description = "scratchpad", group = "launcher" }),
 
 	-- Screen Shots/Vids
-	awful.key({}, "Print", function()
-		awful.spawn("flameshot gui")
-	end, { description = "flameshot gui", group = "awesome" }),
-	awful.key({ shift }, "Print", function()
-		awful.spawn("flameshot gui -d 2000")
-	end, { description = "flameshot gui with 2 second delay", group = "awesome" }),
+	awful.key({}, "Print", apps.screenshot_full, { description = "screenshot gui", group = "awesome" }),
+	awful.key({ shift }, "Print", apps.screenshot_clipboard, { description = "screenshot to clipboard", group = "awesome" }),
 
 	-- Prompt
 	awful.key({ mod }, "d", function()
-		awful.spawn("rofi -matching fuzzy -show combi")
-	end, { description = "rofi launcher", group = "app" }),
+		awful.screen.focused().mypromptbox:run()
+	end, { description = "run prompt", group = "launcher" }),
 	--- App launcher
 	awful.key({ mod }, "a", function()
-		awful.spawn("rofi -matching fuzzy -show drun")
+		awful.spawn(user.app_launcher)
 	end, { description = "app launcher", group = "app" }),
 	--- Emoji picker
-	awful.key({ mod }, "e", function()
-		awful.spawn("rofi -matching normal -show emoji")
-	end, { description = "emoji picker", group = "app" }),
+	awful.key({ mod }, "e", apps.emoji_picker, { description = "emoji picker", group = "app" }),
 	--- Clipboard
-	awful.key({ mod }, "v", function()
-		awful.spawn("clipmenu")
-	end, { description = "clipboard", group = "app" }),
+	awful.key({ mod }, "v", apps.clipboard, { description = "clipboard", group = "app" }),
 
 	-- Hotkeys list
 	awful.key({ mod }, "F1", function()
@@ -371,7 +363,7 @@ keys.globalkeys = gears.table.join(
 -- Client related bindings
 -- =============================================
 keys.clientkeys = gears.table.join(
-	-- Swap by direction
+-- Swap by direction
 	awful.key({ mod, shift }, "j", function()
 		awful.client.swap.bydirection("down")
 	end),
@@ -466,13 +458,13 @@ keys.clientbuttons = gears.table.join(
 		-- awful.mouse.resize(c, nil, {jump_to_corner=true})
 	end)
 
-	-- Super + scroll = Change client opacity
-	-- awful.button({ mod }, 4, function(c)
-	-- 	c.opacity = c.opacity + 0.1
-	-- end),
-	-- awful.button({ mod }, 5, function(c)
-	-- 	c.opacity = c.opacity - 0.1
-	-- end)
+-- Super + scroll = Change client opacity
+-- awful.button({ mod }, 4, function(c)
+-- 	c.opacity = c.opacity + 0.1
+-- end),
+-- awful.button({ mod }, 5, function(c)
+-- 	c.opacity = c.opacity - 0.1
+-- end)
 )
 
 -- Mouse buttons on the tasklist

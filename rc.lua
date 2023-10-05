@@ -10,9 +10,11 @@ local decorations = {}
 -- User variables and preferences
 -- =============================================
 user = {
-	terminal = os.getenv("TERMINAL") or "kitty",
-	editor = os.getenv("EDITOR") or "nano",
-	browser = os.getenv("BROWSER") or "vivaldi",
+	terminal = "kitty -1",
+	floating_terminal = "kitty -1" .. " --class floating_terminal",
+	scratchpad_terminal = "kitty -1" .. " --class scratchpad",
+	editor = "kitty -1 --class editor -e nvim",
+	browser = "vivaldi",
 	file_manager = "pcmanfm",
 	visual_editor = "codium",
 	openweathermap_key = "d1b3b6a81db867259446b0863d5f9108",
@@ -22,6 +24,7 @@ user = {
 	},
 	openweathermap_weather_units = "metric",
 	lock_screen_custom_password = "awesome",
+	app_launcher = "rofi -matching fuzzy -show drun",
 }
 
 -- Initialization
@@ -57,8 +60,6 @@ end)
 local helpers = require("helpers")
 -- Apps
 apps = {
-	floating_terminal = user.terminal .. " --class floating_terminal",
-	scratchpad_terminal = user.terminal .. " --class scratchpad",
 	browser = function()
 		awful.spawn(user.browser, { switchtotag = true })
 	end,
@@ -89,6 +90,18 @@ apps = {
 			user.terminal .. " --class gotop -e gotop",
 			{ switchtotag = true }
 		)
+	end,
+	screenshot_full = function()
+		awful.spawn.with_shell("gscreenshot")
+	end,
+	screenshot_clipboard = function()
+		awful.spawn.with_shell("gscreenshot -s -c")
+	end,
+	clipboard = function()
+		awful.spawn.with_shell("clipmenu")
+	end,
+	emoji_picker = function()
+		awful.spawn("rofi -matching fuzzy -show emoji")
 	end,
 }
 

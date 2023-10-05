@@ -197,7 +197,7 @@ awesome.connect_signal("evil::weather", function(result)
 		string.upper
 	) .. ", "
 	weather_widget:get_children_by_id("temp_current")[1].markup = math.floor(result.current.temp)
-		.. "<sup><span>°</span></sup><span>C</span>"
+			.. "<sup><span>°</span></sup><span>C</span>"
 end)
 
 -- Playerctl widget
@@ -243,14 +243,14 @@ awesome.connect_signal("evil::spotify", function(artist, title, status)
 end)
 
 playerctl_widget:buttons(gears.table.join(
-	-- left click = all players
+-- left click = all players
 	awful.button({}, 1, function()
 		awful.spawn.with_shell("playerctl play-pause")
 	end)
-	-- right click = specific player
-	-- awful.button({}, 3, function()
-	-- 	awful.spawn.with_shell("mpvc toggle")
-	-- end)
+-- right click = specific player
+-- awful.button({}, 3, function()
+-- 	awful.spawn.with_shell("mpvc toggle")
+-- end)
 ))
 
 -- Volume widget
@@ -381,6 +381,8 @@ end)
 -- ░▀░▀░▀▀▀░▀▀░░▀░▀░▀░▀
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
+	-- Create a promptbox for each screen
+	s.mypromptbox = awful.widget.prompt({ prompt = " Run: ", fg = beautiful.wibar_fg })
 	-- Create an imagebox widget which will contain an icon indicating which layout we're using.
 	-- We need one layoutbox per screen.
 	s.mylayoutbox = {
@@ -422,7 +424,7 @@ awful.screen.connect_for_each_screen(function(s)
 			tagBox.bg = beautiful.taglist_text_color_occupied[index]
 		elseif tag.urgent then
 			tagName.markup =
-				helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
+					helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
 			tagBox.bg = beautiful.wibar_bg
 		elseif #tag:clients() > 0 then
 			tagName.markup = helpers.colorize_text(
@@ -432,7 +434,7 @@ awful.screen.connect_for_each_screen(function(s)
 			tagBox.bg = beautiful.wibar_bg
 		else
 			tagName.markup =
-				helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
+					helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
 			tagBox.bg = beautiful.wibar_bg
 		end
 	end
@@ -551,6 +553,7 @@ awful.screen.connect_for_each_screen(function(s)
 				layout = wibox.layout.fixed.horizontal,
 			},
 			{
+				s.mypromptbox,
 				playerctl_widget,
 				-- volume_bar,
 				align = "center",
