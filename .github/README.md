@@ -43,7 +43,7 @@ Although it takes time and effort to configure it, I am very satisfied with this
 Here are some details about my setup:
 
 - **WM:** [awesome](https://github.com/awesomeWM/awesome)
-- **Terminal:** [kitty](https://github.com/kovidgoyal/kitty)
+- **Terminal:** [wezterm](https://github.com/wez/wezterm)
 - **Shell:** [bash](https://www.gnu.org/software/bash/)
 - **Editor:** [nvchad](https://github.com/NvChad/NvChad) / [vscodium](https://github.com/VSCodium/vscodium)
 - **Compositor:** [picom (dccsillag's fork)](https://github.com/dccsillag/picom)
