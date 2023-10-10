@@ -10,10 +10,10 @@ local decorations = {}
 -- User variables and preferences
 -- =============================================
 user = {
-	terminal = "kitty -1",
-	floating_terminal = "kitty -1" .. " --class floating_terminal",
-	scratchpad_terminal = "kitty -1" .. " --class scratchpad",
-	editor = "kitty -1 --class editor -e nvim",
+	terminal = "wezterm",
+	floating_terminal = "wezterm" .. " --class floating_terminal",
+	scratchpad_terminal = "wezterm" .. " --class scratchpad",
+	editor = "wezterm --class editor -e nvim",
 	browser = "vivaldi",
 	file_manager = "pcmanfm",
 	visual_editor = "codium",
