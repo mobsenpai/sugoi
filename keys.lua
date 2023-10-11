@@ -28,11 +28,6 @@ menu.awesome = {
 			return false, hotkeys_popup.show_help
 		end,
 	},
-	{ "Manual", user.terminal .. " -e man awesome" },
-	{
-		"Edit config",
-		string.format("%s -e %s %s", user.terminal, user.terminal .. " -e " .. user.editor, awesome.conffile),
-	},
 	{
 		"Restart",
 		function()
@@ -52,7 +47,7 @@ menu.mainmenu = awful.menu({
 		{ "  Terminal", user.terminal },
 		{ "  Explorer", user.file_manager },
 		{ "  Browser", user.browser },
-		{ "  Editor", user.terminal .. " -e " .. user.editor },
+		{ "  Editor", user.editor },
 		{ "󰨞  GUI Editor", user.visual_editor },
 		{ "  AwesomeWM", menu.awesome },
 		{
@@ -103,19 +98,19 @@ keys.desktopbuttons = gears.table.join(
 		helpers.volume_control(5)
 	end)
 
--- Side buttons - Minimize and restore minimized client
--- awful.button({}, 8, function()
--- 	if client.focus ~= nil then
--- 		client.focus.minimized = true
--- 	end
--- end),
--- awful.button({}, 9, function()
--- 	local c = awful.client.restore()
--- 	-- Focus restored client
--- 	if c then
--- 		client.focus = c
--- 	end
--- end)
+	-- Side buttons - Minimize and restore minimized client
+	-- awful.button({}, 8, function()
+	-- 	if client.focus ~= nil then
+	-- 		client.focus.minimized = true
+	-- 	end
+	-- end),
+	-- awful.button({}, 9, function()
+	-- 	local c = awful.client.restore()
+	-- 	-- Focus restored client
+	-- 	if c then
+	-- 		client.focus = c
+	-- 	end
+	-- end)
 )
 
 -- Global bindings
@@ -292,7 +287,12 @@ keys.globalkeys = gears.table.join(
 
 	-- Screen Shots/Vids
 	awful.key({}, "Print", apps.screenshot_full, { description = "screenshot gui", group = "awesome" }),
-	awful.key({ shift }, "Print", apps.screenshot_clipboard, { description = "screenshot to clipboard", group = "awesome" }),
+	awful.key(
+		{ shift },
+		"Print",
+		apps.screenshot_clipboard,
+		{ description = "screenshot to clipboard", group = "awesome" }
+	),
 
 	-- Prompt
 	awful.key({ mod }, "d", function()
@@ -363,7 +363,7 @@ keys.globalkeys = gears.table.join(
 -- Client related bindings
 -- =============================================
 keys.clientkeys = gears.table.join(
--- Swap by direction
+	-- Swap by direction
 	awful.key({ mod, shift }, "j", function()
 		awful.client.swap.bydirection("down")
 	end),
@@ -458,13 +458,13 @@ keys.clientbuttons = gears.table.join(
 		-- awful.mouse.resize(c, nil, {jump_to_corner=true})
 	end)
 
--- Super + scroll = Change client opacity
--- awful.button({ mod }, 4, function(c)
--- 	c.opacity = c.opacity + 0.1
--- end),
--- awful.button({ mod }, 5, function(c)
--- 	c.opacity = c.opacity - 0.1
--- end)
+	-- Super + scroll = Change client opacity
+	-- awful.button({ mod }, 4, function(c)
+	-- 	c.opacity = c.opacity + 0.1
+	-- end),
+	-- awful.button({ mod }, 5, function(c)
+	-- 	c.opacity = c.opacity - 0.1
+	-- end)
 )
 
 -- Mouse buttons on the tasklist

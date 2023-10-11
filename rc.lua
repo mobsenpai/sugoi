@@ -10,10 +10,10 @@ local decorations = {}
 -- User variables and preferences
 -- =============================================
 user = {
-	terminal = "wezterm",
-	floating_terminal = "wezterm" .. " --class floating_terminal",
-	scratchpad_terminal = "wezterm" .. " --class scratchpad",
-	editor = "wezterm --class editor -e nvim",
+	terminal = "wezterm start",
+	floating_terminal = "wezterm start --class floating_terminal",
+	scratchpad_terminal = "wezterm start --class scratchpad",
+	editor = "wezterm start --class editor -e nvim",
 	browser = "vivaldi",
 	file_manager = "pcmanfm",
 	visual_editor = "codium",
@@ -70,12 +70,7 @@ apps = {
 		helpers.run_or_raise({ instance = "ranger" }, false, user.terminal .. " --class ranger -e ranger")
 	end,
 	editor = function()
-		helpers.run_or_raise(
-			{ instance = "editor" },
-			false,
-			user.terminal .. " --class editor  -e " .. user.editor,
-			{ switchtotag = true }
-		)
+		helpers.run_or_raise({ instance = "editor" }, false, user.editor, { switchtotag = true })
 	end,
 	visual_editor = function()
 		helpers.run_or_raise({ class = "VSCodium" }, false, user.visual_editor, { switchtotag = true })
@@ -85,9 +80,9 @@ apps = {
 	end,
 	process_monitor = function()
 		helpers.run_or_raise(
-			{ instance = "gotop" },
+			{ instance = "bottom" },
 			false,
-			user.terminal .. " --class gotop -e gotop",
+			user.terminal .. " --class bottom -e btm",
 			{ switchtotag = true }
 		)
 	end,
@@ -576,11 +571,11 @@ awful.rules.rules = {
 		rule_any = {
 			class = {
 				"htop",
-				"gotop",
+				"bottom",
 			},
 			instance = {
 				"htop",
-				"gotop",
+				"bottom",
 			},
 		},
 		properties = { screen = 1, tag = awful.screen.focused().tags[5] },
