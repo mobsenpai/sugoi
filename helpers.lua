@@ -149,7 +149,9 @@ function helpers.lighten(hex_color, amt)
 	-----------------------------
 	-- Saturation
 	local s
-	if l <= 0.5 then
+	if l == 0 then
+		s = 0
+	elseif l <= 0.5 then
 		s = c / (l * 2)
 	elseif l > 0.5 then
 		s = c / (2 - (l * 2))
