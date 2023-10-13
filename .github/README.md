@@ -154,3 +154,4 @@ sugoi is created by <a href="https://github.com/MobSenpai">MobSenpai</a>.
 - [elenapan](https://github.com/elenapan)
 - [rxyhn](https://github.com/rxyhn)
 - [JavaCafe01](https://github.com/JavaCafe01)
+- [Sinomor](https://github.com/Sinomor)
