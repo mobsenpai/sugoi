@@ -81,7 +81,7 @@ awesome-git
 > Install necessary dependencies
 
 ```sh
-picom-git alacritty rofi pipewire feh playerctl
+picom-allusive wezterm rofi pipewire feh playerctl
 ```
 
 </details>
