@@ -74,7 +74,7 @@ user = {
 }
 ```
 
-> As I am on nixos my .Xresources files are auto-generated and thus I am not able to include it in ther repository. You can use your own xresources. I am using base16 colorschemes of gruvbox for this setup. You can just add these lines to your ~/.Xresources file. The colors are as follows:
+> As I am on nixos my .Xresources files are auto-generated and thus I am not able to include it in the repository. You can use your own xresources. I am using base16 colorschemes of gruvbox for this setup. You can just add these lines to your ~/.Xresources file. The colors are as follows:
 
 ```
 ! special
