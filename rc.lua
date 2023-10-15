@@ -66,9 +66,9 @@ apps = {
 	file_manager = function()
 		awful.spawn(user.file_manager, { floating = true })
 	end,
-	term_filemanager = function()
-		helpers.run_or_raise({ instance = "ranger" }, false, user.terminal .. " --class ranger -e ranger")
-	end,
+	-- term_filemanager = function()
+	-- 	helpers.run_or_raise({ instance = "ranger" }, false, user.terminal .. " --class ranger -e ranger")
+	-- end,
 	editor = function()
 		helpers.run_or_raise({ instance = "editor" }, false, user.editor, { switchtotag = true })
 	end,
