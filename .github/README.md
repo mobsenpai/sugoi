@@ -8,6 +8,8 @@
 >
 > This is just my personal configs. I have used many sources for this I do not claim this is my original idea.
 
+<br>
+
 ---
 
 AwesomeWM is the most powerful and highly configurable next-generation framework window manager for X. This is my favourite WM. Although it takes time and effort to configure it, I am very satisfied with this aesthetic result.
@@ -17,6 +19,8 @@ AwesomeWM is the most powerful and highly configurable next-generation framework
 > Here are some details about my setup.
 >
 > Read carefully and go through the dotfiles before using.
+
+<img src="https://imgur.com/dAQhRWC.png" align="right" width="400px">
 
 | Config Defaults | Info                                                                                                               |
 | :-------------- | :----------------------------------------------------------------------------------------------------------------- |
@@ -35,8 +39,6 @@ AwesomeWM is the most powerful and highly configurable next-generation framework
 | Wallpaper       | [海島千本](https://www.pixiv.net/en/users/18362) / [🗝️𝐆𝐞𝐧𝐞𝐫𝐚𝐥 𝐒𝐭𝐨𝐫𝐞🛋️](https://www.pixiv.net/en/artworks/89143248) |
 
 _Ofc you can change it._
-
-<img src="https://imgur.com/dAQhRWC.png" align="right" width="400px">
 
 ## Main features
 
