@@ -9,12 +9,13 @@
 > This is just my personal configs. I have used many sources for this I do not claim this is my original idea.
 
 <br>
+<br>
 
 ---
 
 AwesomeWM is the most powerful and highly configurable next-generation framework window manager for X. This is my favourite WM. Although it takes time and effort to configure it, I am very satisfied with this aesthetic result.
 
-## ℹ️ Information
+## 📢 Information
 
 > Here are some details about my setup.
 >
@@ -40,7 +41,7 @@ AwesomeWM is the most powerful and highly configurable next-generation framework
 
 _Ofc you can change it._
 
-## Main features
+## 💎 Main features
 
 - [x] dynamic icons in workspaces
 - [x] running apps list in bar
@@ -223,7 +224,7 @@ return {
 ```
 
 ```toml
--- ~/.config/wezterm/colors/gruvbox-dark-medium.toml
+# ~/.config/wezterm/colors/gruvbox-dark-medium.toml
 [colors]
 ansi = ["282828", "fb4934", "b8bb26", "fabd2f", "83a598", "d3869b", "8ec07c", "d5c4a1"]
 background = "282828"
@@ -271,7 +272,7 @@ fg_color = "d5c4a1"
 
 _And **many many** more...._
 
-## Installation
+## 🔧 Installation
 
 If you have read all the above then. It is actually very easy to install you don't need to install any other program to run it. If using my defaults then these programs should be enough (programs names may vary depending on the distro). Ofc you can use what you want, be sure to make the respective changes.
 
