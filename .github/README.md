@@ -295,7 +295,7 @@ If you have read all the above then. It is actually very easy to install you don
 - [ ] ttf-jetbrains-mono-nerd
 - [ ] feh
 
-> finally just clone the repo to you ~/.config/awesome
+> finally just clone the repo to your ~/.config/awesome
 
 ```bash
 git clone https://github.com/MobSenpai/sugoi.git
@@ -368,6 +368,8 @@ window_padding_width 7
 ```
 theme.wibar_width = dpi(1920)
 ```
+
+> Clipmenu is used as clipboard. It needs some configuration, so research on your own, or replace with something else
 
 ## 💡 Acknowledgements
 
