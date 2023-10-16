@@ -51,6 +51,9 @@ _Ofc you can change it._
 - [x] cpu useage in bar
 - [x] clock in bar
 - [x] layout indicator in bar
+- [x] volume & brightness osd
+- [x] clipboard
+- [x] screenshot
 
 > Check the user variable in `rc.lua` to change the defaults to your apps first. Most important ones are ` terminal` and `app_launcher`.
 
@@ -220,7 +223,6 @@ return {
     hide_tab_bar_if_only_one_tab = true,
     show_tab_index_in_tab_bar = false,
 }
-
 ```
 
 ```toml
@@ -257,18 +259,20 @@ fg_color = "83a598"
 [colors.tab_bar.new_tab_hover]
 bg_color = "282828"
 fg_color = "d5c4a1"
-
 ```
 
 > Use https://github.com/tinted-theming/base16-schemes, to add colorschems to more apps Eg. rofi.
 
 > Some important keybinds. More in `keys.lua`
 
-| Keybind         | Function                 |
-| --------------- | ------------------------ |
-| `super + enter` | Open terminal            |
-| `super + A`     | Open rofi drun           |
-| `super + S`     | Open scratchpad terminal |
+| Keybind             | Function                 |
+| ------------------- | ------------------------ |
+| `super + enter`     | Open terminal            |
+| `super + A`         | Open rofi drun           |
+| `super + S`         | Open scratchpad terminal |
+| `super + shift + q` | Quit awesome             |
+| `super + shift + r` | Reload awesome           |
+| `super + q`         | Close selected window    |
 
 _And **many many** more...._
 
@@ -277,23 +281,92 @@ _And **many many** more...._
 If you have read all the above then. It is actually very easy to install you don't need to install any other program to run it. If using my defaults then these programs should be enough (programs names may vary depending on the distro). Ofc you can use what you want, be sure to make the respective changes.
 
 - [ ] awesome-git
-- [ ] rofi
 - [ ] wezterm
-- [ ] clipmenu
-- [ ] gscreenshot
+- [ ] pipewire pipewire-alsa pipewire-pulse alsa-utils wireplumber
+- [ ] rofi
+- [ ] clipmenu xclip maim slop swappy
+- [ ] inotify-tools light
+- [ ] playerctl
 - [ ] rofi-emoji
-- [ ] clipmenu
 - [ ] bottom
 - [ ] ranger
 - [ ] pcmanfm
 - [ ] bottom
-- [ ] nerd-fonts-jetbrains-mono
+- [ ] ttf-jetbrains-mono-nerd
 - [ ] feh
 
 > finally just clone the repo to you ~/.config/awesome
 
 ```bash
 git clone https://github.com/MobSenpai/sugoi.git
+```
+
+## Notes
+
+> I have noticed that wezterm does not work on some installs, so it is advisable to change the default terminal to `kitty` by changing these lines in `rc.lua`
+
+```
+terminal = "kitty",
+floating_terminal = "kitty --class floating_terminal",
+scratchpad_terminal = "kitty --class scratchpad",
+```
+
+<details> <summary> Use this theme for kitty </summary>
+
+```
+# See https://sw.kovidgoyal.net/kitty/conf.html
+font_family monospace
+font_size 10
+
+
+# Shell integration is sourced and configured manually
+shell_integration no-rc enabled
+
+active_border_color #665c54
+active_tab_background #282828
+active_tab_foreground #d5c4a1
+background #282828
+color0 #282828
+color1 #fb4934
+color10 #b8bb26
+color11 #fabd2f
+color12 #83a598
+color13 #d3869b
+color14 #8ec07c
+color15 #fbf1c7
+color16 #fe8019
+color17 #d65d0e
+color18 #3c3836
+color19 #504945
+color2 #b8bb26
+color20 #bdae93
+color21 #ebdbb2
+color3 #fabd2f
+color4 #83a598
+color5 #d3869b
+color6 #8ec07c
+color7 #d5c4a1
+color8 #665c54
+color9 #fb4934
+cursor #d5c4a1
+foreground #d5c4a1
+inactive_border_color #3c3836
+inactive_tab_background #3c3836
+inactive_tab_foreground #bdae93
+scrollback_lines 2000
+selection_background #d5c4a1
+selection_foreground #282828
+tab_bar_background #3c3836
+url_color #bdae93
+window_padding_width 7
+```
+
+</details> <br>
+
+> Change the bar size to your display resolution by, changing this line in themes/gruva/theme.lua
+
+```
+theme.wibar_width = dpi(1920)
 ```
 
 ## 💡 Acknowledgements

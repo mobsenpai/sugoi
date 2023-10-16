@@ -7,6 +7,7 @@ local awful = require("awful")
 local volume_old = -1
 local muted_old = -1
 local function emit()
+	-- Requires wireplumber
 	awful.spawn.easy_async_with_shell("wpctl get-volume @DEFAULT_AUDIO_SINK@", function(out)
 		local volume = tonumber(string.match(out:match("(%d%.%d+)") * 100, "(%d+)"))
 		local muted = out:match("MUTED")
@@ -32,10 +33,13 @@ local function emit()
 	end)
 end
 
+-- Run once to initialize widgets
 emit()
 
+-- Subscribe to pactl changes
 local subscribe = [[ bash -c "LANG=C pactl subscribe 2> /dev/null | grep --line-buffered \"Event 'change' on sink\"" ]]
 
+-- Kill old pactl processes
 awful.spawn.easy_async({ "pkill", "--full", "--uid", os.getenv("USER"), "^pactl subscribe" }, function()
 	awful.spawn.with_line_callback(subscribe, {
 		stdout = function()

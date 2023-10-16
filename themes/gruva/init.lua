@@ -18,7 +18,7 @@ local client = client
 -- ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░░▀░░▀▀▀
 
 -- Memory widget
--- =============================================
+-- ===================================================================
 local memory_widget = wibox.widget({
 	{
 		{
@@ -62,7 +62,7 @@ awesome.connect_signal("evil::ram", function(used, total)
 end)
 
 -- Clock widget
--- =============================================
+-- ===================================================================
 local clock_widget = wibox.widget({
 	{
 		{
@@ -103,7 +103,7 @@ local clock_widget = wibox.widget({
 })
 
 -- CPU widget
--- =============================================
+-- ===================================================================
 local cpu_widget = wibox.widget({
 	{
 		{
@@ -147,7 +147,7 @@ awesome.connect_signal("evil::cpu", function(cpu_idle)
 end)
 
 -- Weather widget
--- =============================================
+-- ===================================================================
 local weather_widget = wibox.widget({
 	{
 		{
@@ -197,11 +197,11 @@ awesome.connect_signal("evil::weather", function(result)
 		string.upper
 	) .. ", "
 	weather_widget:get_children_by_id("temp_current")[1].markup = math.floor(result.current.temp)
-			.. "<sup><span>°</span></sup><span>C</span>"
+		.. "<sup><span>°</span></sup><span>C</span>"
 end)
 
 -- Playerctl widget
--- =============================================
+-- ===================================================================
 local playerctl_widget = wibox.widget({
 	{
 		{
@@ -243,18 +243,18 @@ awesome.connect_signal("evil::spotify", function(artist, title, status)
 end)
 
 playerctl_widget:buttons(gears.table.join(
--- left click = all players
+	-- left click = all players
 	awful.button({}, 1, function()
 		awful.spawn.with_shell("playerctl play-pause")
 	end)
--- right click = specific player
--- awful.button({}, 3, function()
--- 	awful.spawn.with_shell("mpvc toggle")
--- end)
+	-- right click = specific player
+	-- awful.button({}, 3, function()
+	-- 	awful.spawn.with_shell("mpvc toggle")
+	-- end)
 ))
 
 -- Volume widget
--- =============================================
+-- ===================================================================
 local volume_bar = wibox.widget({
 	max_value = 100,
 	value = 70,
@@ -277,7 +277,7 @@ awesome.connect_signal("evil::volume", function(volume, muted)
 end)
 
 -- Osd
--- =============================================
+-- ===================================================================
 local slider = wibox.widget({
 	widget = wibox.widget.progressbar,
 	max_value = 100,
@@ -346,11 +346,11 @@ awesome.connect_signal("evil::volume", function(volume, muted, icon)
 end)
 
 -- bright
--- awesome.connect_signal("bright::value", function(value)
--- 	slider.value = value
--- 	text.text = value
--- 	icon_widget.text = "󰃟"
--- end)
+awesome.connect_signal("evil::brightness", function(value)
+	slider.value = value
+	text.text = value
+	icon_widget.text = "󰃟"
+end)
 
 -- function
 local function osd_hide()
@@ -424,7 +424,7 @@ awful.screen.connect_for_each_screen(function(s)
 			tagBox.bg = beautiful.taglist_text_color_occupied[index]
 		elseif tag.urgent then
 			tagName.markup =
-					helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
+				helpers.colorize_text(beautiful.taglist_text_urgent[index], beautiful.taglist_text_color_urgent[index])
 			tagBox.bg = beautiful.wibar_bg
 		elseif #tag:clients() > 0 then
 			tagName.markup = helpers.colorize_text(
@@ -434,7 +434,7 @@ awful.screen.connect_for_each_screen(function(s)
 			tagBox.bg = beautiful.wibar_bg
 		else
 			tagName.markup =
-					helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
+				helpers.colorize_text(beautiful.taglist_text_empty[index], beautiful.taglist_text_color_empty[index])
 			tagBox.bg = beautiful.wibar_bg
 		end
 	end
@@ -590,7 +590,7 @@ end)
 -- ░▀▀▀░▀░░░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
 
 -- Notification settings
--- =============================================
+-- ===================================================================
 -- Handle notification icon
 naughty.connect_signal("request::icon", function(n, context, hints)
 	-- Handle other contexts here
@@ -650,7 +650,7 @@ naughty.connect_signal("request::display", function(n)
 end)
 
 -- Titlebar
--- =============================================
+-- ===================================================================
 client.connect_signal("request::titlebars", function(c)
 	local titlebar = awful.titlebar(c, {
 		position = beautiful.titlebar_position,
@@ -707,8 +707,8 @@ client.connect_signal("request::titlebars", function(c)
 	}
 end)
 
--- Autostart applications
--- =============================================
+-- Startup apps
+-- ===================================================================
 -- awful.spawn.once({},false)
 -- With shell
 -- awful.spawn.with_shell({}, false)

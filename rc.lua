@@ -8,7 +8,7 @@ local screen = screen
 local decorations = {}
 
 -- User variables and preferences
--- =============================================
+-- ===================================================================
 user = {
 	terminal = "wezterm start",
 	floating_terminal = "wezterm start --class floating_terminal",
@@ -28,7 +28,7 @@ user = {
 }
 
 -- Initialization
--- =============================================
+-- ===================================================================
 local beautiful = require("beautiful")
 -- Make dpi function global
 dpi = beautiful.xresources.apply_dpi
@@ -87,16 +87,16 @@ apps = {
 		)
 	end,
 	screenshot_full = function()
-		awful.spawn.with_shell("gscreenshot")
+		awful.spawn.with_shell("maim -s | swappy -f -")
 	end,
 	screenshot_clipboard = function()
-		awful.spawn.with_shell("gscreenshot -s -c")
+		awful.spawn.with_shell("maim -s | xclip -selection clipboard -t image/png")
 	end,
 	clipboard = function()
 		awful.spawn.with_shell("clipmenu")
 	end,
 	emoji_picker = function()
-		awful.spawn("rofi -matching fuzzy -show emoji")
+		awful.spawn("rofi -show emoji")
 	end,
 }
 
@@ -643,7 +643,7 @@ awful.rules.rules = {
 }
 
 -- Signals
--- =============================================
+-- ===================================================================
 if beautiful.border_width > 0 then
 	client.connect_signal("focus", function(c)
 		c.border_color = beautiful.border_focus
@@ -744,7 +744,7 @@ awesome.connect_signal("widgets::splash::visibility", function(vis)
 end)
 
 -- Decorations
--- =============================================
+-- ===================================================================
 local wibox = require("wibox")
 -- Apply rounded corners to clients if needed
 if beautiful.border_radius and beautiful.border_radius > 0 then

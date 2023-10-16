@@ -327,10 +327,12 @@ keys.globalkeys = gears.table.join(
 
 	-- Brightness control with brightness keys
 	awful.key({}, "XF86MonBrightnessUp", function()
-		awful.spawn("brightnessctl s +5%")
+		awful.spawn("light -A 10")
+		awesome.emit_signal("summon::osd")
 	end, { description = "increase brightness", group = "brightness" }),
 	awful.key({}, "XF86MonBrightnessDown", function()
-		awful.spawn("brightnessctl s 5%-")
+		awful.spawn("light -U 10")
+		awesome.emit_signal("summon::osd")
 	end, { description = "increase brightness", group = "brightness" }),
 
 	-- Lockscreen
