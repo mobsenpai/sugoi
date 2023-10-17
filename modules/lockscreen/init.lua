@@ -28,3 +28,4 @@ awful.spawn.easy_async_with_shell("stat " .. lua_pam_path .. " >/dev/null 2>&1",
 end)
 
 return lock_screen
+-- EOF ------------------------------------------------------------------------

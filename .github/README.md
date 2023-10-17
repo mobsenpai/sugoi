@@ -48,7 +48,7 @@ _Ofc you can change it._
 - [x] music name in bar
 - [x] weather in bar
 - [x] memory usage in bar
-- [x] cpu useage in bar
+- [x] cpu usage in bar
 - [x] clock in bar
 - [x] layout indicator in bar
 - [x] volume & brightness osd
@@ -77,7 +77,7 @@ user = {
 }
 ```
 
-> As I am on nixos my .Xresources files are auto-generated and thus I am not able to include it in the repository. You can use your own xresources. I am using base16 colorschemes of gruvbox for this setup. You can just add these lines to your ~/.Xresources file. The colors are as follows:
+> As I am on nixos my .Xresources files are auto-generated and thus I am not able to include it in the repository. You can use your own xresources as well. In this setup however, I am using base16 colorschemes of gruvbox for this setup. You can just add these lines to your ~/.Xresources file. The colors are as follows:
 
 ```
 ! special
@@ -120,6 +120,8 @@ user = {
 ```
 
 > same goes with wezterm. So here is the wezterm's config
+
+<details> <summary> ~/.config/wezterm </summary>
 
 ```lua
 -- ~/.config/wezterm/wezterm.lua
@@ -261,6 +263,216 @@ bg_color = "282828"
 fg_color = "d5c4a1"
 ```
 
+</details> <br>
+
+> For rofi as well
+
+<details> <summary> ~/.config/config.rasi</summary>
+
+```rasi
+* {
+active: #b8bb26ff;
+active-background: var(active);
+active-foreground: var(background);
+alternate-active-background: var(active);
+alternate-active-foreground: var(background);
+alternate-background: var(background-alt);
+alternate-normal-background: var(background-alt);
+alternate-normal-foreground: var(foreground);
+alternate-urgent-background: var(urgent);
+alternate-urgent-foreground: var(background);
+background: #282828ff;
+background-alt: #3c3836ff;
+background-colour: var(background);
+border-colour: var(selected);
+font: "monospace bold 10";
+foreground: #d5c4a1ff;
+foreground-colour: var(foreground);
+handle-colour: var(selected);
+normal-background: var(background-alt);
+normal-foreground: var(foreground);
+selected: #83a598ff;
+selected-active-background: var(urgent);
+selected-active-foreground: var(background);
+selected-normal-background: var(selected);
+selected-normal-foreground: var(background);
+selected-urgent-background: var(active);
+selected-urgent-foreground: var(background);
+urgent: #fb4934ff;
+urgent-background: var(urgent);
+urgent-foreground: var(background);
+}
+
+configuration {
+display-clipboard: ">";
+display-combi: ">";
+display-drun: ">";
+display-emoji: ">";
+drun-display-format: "{name}";
+modi: "drun,combi,emoji";
+show-icons: false;
+window-format: "{w} · {c} · {t}";
+}
+
+element {
+background-color: transparent;
+border: 0px solid;
+border-color: @border-colour;
+border-radius: 0px;
+cursor: pointer;
+enabled: true;
+margin: 0px;
+padding: 12px;
+spacing: 10px;
+text-color: @foreground-colour;
+}
+
+element alternate.active {
+background-color: var(alternate-active-background);
+text-color: var(alternate-active-foreground);
+}
+
+element alternate.normal {
+background-color: var(alternate-normal-background);
+text-color: var(alternate-normal-foreground);
+}
+
+element alternate.urgent {
+background-color: var(alternate-urgent-background);
+text-color: var(alternate-urgent-foreground);
+}
+
+element normal.active {
+background-color: var(active-background);
+text-color: var(active-foreground);
+}
+
+element normal.normal {
+background-color: var(normal-background);
+text-color: var(normal-foreground);
+}
+
+element normal.urgent {
+background-color: var(urgent-background);
+text-color: var(urgent-foreground);
+}
+
+element selected.active {
+background-color: var(selected-active-background);
+text-color: var(selected-active-foreground);
+}
+
+element selected.normal {
+background-color: var(selected-normal-background);
+text-color: var(selected-normal-foreground);
+}
+
+element selected.urgent {
+background-color: var(selected-urgent-background);
+text-color: var(selected-urgent-foreground);
+}
+
+element-icon {
+background-color: transparent;
+cursor: inherit;
+size: 24px;
+text-color: inherit;
+}
+
+element-text {
+background-color: transparent;
+cursor: inherit;
+highlight: inherit;
+horizontal-align: 0.0;
+text-color: inherit;
+vertical-align: 0.5;
+}
+
+entry {
+background-color: inherit;
+cursor: text;
+enabled: true;
+margin: 8px 0px 0px 14px;
+placeholder: "Search...";
+placeholder-color: inherit;
+text-color: inherit;
+}
+
+inputbar {
+background-color: @background-colour;
+border: 0px;
+border-color: @border-colour;
+border-radius: 0px;
+children: [ prompt, entry ];
+enabled: true;
+margin: 0px;
+padding: 0px 0px 6px 0px;
+spacing: 10px;
+text-color: @foreground-colour;
+}
+
+listview {
+background-color: transparent;
+border: 0px solid;
+border-color: @border-colour;
+border-radius: 0px;
+columns: 1;
+cursor: "default";
+cycle: true;
+dynamic: true;
+enabled: true;
+fixed-columns: true;
+fixed-height: true;
+layout: vertical;
+lines: 7;
+margin: 0px;
+padding: 0px;
+reverse: false;
+scrollbar: false;
+spacing: 10px;
+text-color: @foreground-colour;
+}
+
+mainbox {
+background-color: transparent;
+border: 0px solid;
+border-color: @border-colour;
+border-radius: 0px 0px 0px 0px;
+children: [ inputbar, listview];
+enabled: true;
+margin: 0px;
+padding: 10px;
+spacing: 10px;
+}
+
+prompt {
+background-color: @background-alt;
+enabled: true;
+padding: 2px 14px 4px 14px;
+text-color: inherit;
+}
+
+window {
+anchor: center;
+background-color: @background-colour;
+border: 2px solid;
+border-color: @border-colour;
+border-radius: 0px;
+cursor: "default";
+enabled: true;
+fullscreen: false;
+location: center;
+margin: 0px;
+padding: 0px;
+transparency: "real";
+width: 420px;
+x-offset: 0px;
+y-offset: 0px;
+}
+```
+
+</details> <br>
+
 > Use https://github.com/tinted-theming/base16-schemes, to add colorschems to more apps Eg. rofi.
 
 > Some important keybinds. More in `keys.lua`
@@ -295,7 +507,7 @@ If you have read all the above then. It is actually very easy to install you don
 - [ ] ttf-jetbrains-mono-nerd
 - [ ] feh
 
-> finally just clone the repo to your ~/.config/awesome
+> finally just clone the repo to your `~/.config/awesome`
 
 ```bash
 git clone https://github.com/MobSenpai/sugoi.git
@@ -363,13 +575,19 @@ window_padding_width 7
 
 </details> <br>
 
-> Change the bar size to your display resolution by, changing this line in themes/gruva/theme.lua
+> Change the bar size to your display resolution by, changing this line in `themes/gruva/theme.lua`
 
 ```
 theme.wibar_width = dpi(1920)
 ```
 
-> Clipmenu is used as clipboard. It needs some configuration, so research on your own, or replace with something else
+> `Clipmenu` is used as clipboard. It needs some configuration, so research on your own, or replace with something else.
+
+> Uncomment this line in `evil/init.lua` to enable brightness osd.
+
+```
+require("evil.brightness")
+```
 
 ## 💡 Acknowledgements
 

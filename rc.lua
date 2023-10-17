@@ -3,6 +3,7 @@
 -- ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀░▀░▀░▀░▀░░░▀▀▀░░░▀▀▀░░░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 
 -- >> The file that binds everything together.
+local awesome = awesome
 local client = client
 local screen = screen
 local decorations = {}
@@ -10,12 +11,13 @@ local decorations = {}
 -- User variables and preferences
 -- ===================================================================
 user = {
-	terminal = "wezterm start",
+	terminal = "wezterm start --always-new-process",
 	floating_terminal = "wezterm start --class floating_terminal",
 	scratchpad_terminal = "wezterm start --class scratchpad",
 	editor = "wezterm start --class editor -e hx",
 	browser = "vivaldi",
 	file_manager = "pcmanfm",
+	term_filemanager = "",
 	visual_editor = "codium",
 	openweathermap_key = "d1b3b6a81db867259446b0863d5f9108",
 	openweathermap_city_id = {
@@ -60,15 +62,16 @@ end)
 local helpers = require("helpers")
 -- Apps
 apps = {
+	-- TODO: switchtotag not working?
 	browser = function()
 		awful.spawn(user.browser, { switchtotag = true })
 	end,
 	file_manager = function()
 		awful.spawn(user.file_manager, { floating = true })
 	end,
-	-- term_filemanager = function()
-	-- 	helpers.run_or_raise({ instance = "ranger" }, false, user.terminal .. " --class ranger -e ranger")
-	-- end,
+	term_filemanager = function()
+		awful.spawn(user.term_filemanager, { floating = true })
+	end,
 	editor = function()
 		helpers.run_or_raise({ instance = "editor" }, false, user.editor, { switchtotag = true })
 	end,
@@ -793,4 +796,3 @@ end)
 -- ===================================================================
 collectgarbage("setpause", 110)
 collectgarbage("setstepmul", 1000)
--- EOF ------------------------------------------------------------------------

@@ -25,7 +25,19 @@ menu.awesome = {
 	{
 		"Hotkeys",
 		function()
-			return false, hotkeys_popup.show_help
+			hotkeys_popup.show_help(nil, awful.screen.focused())
+		end,
+	},
+	{
+		"Manual",
+		function()
+			awful.spawn(user.terminal .. " -e man awesome")
+		end,
+	},
+	{
+		"Edit config",
+		function()
+			awful.spawn(user.editor .. " " .. awesome.conffile)
 		end,
 	},
 	{
@@ -45,10 +57,10 @@ menu.awesome = {
 menu.mainmenu = awful.menu({
 	items = {
 		{ "  Terminal", user.terminal },
-		{ "  Explorer", user.file_manager },
-		{ "  Browser", user.browser },
-		{ "  Editor", user.editor },
-		{ "󰨞  GUI Editor", user.visual_editor },
+		{ "  Explorer", apps.file_manager },
+		{ "  Browser", apps.browser },
+		{ "  Editor", apps.editor },
+		{ "󰨞  GUI Editor", apps.visual_editor },
 		{ "  AwesomeWM", menu.awesome },
 		{
 			" Notifications",

@@ -27,7 +27,7 @@ end
 
 -- Create rounded rectangle shape (in one line)
 -- =============================================
-helpers.rrect = function(radius)
+function helpers.rrect(radius)
 	return function(cr, width, height)
 		gears.shape.rounded_rect(cr, width, height, radius)
 	end
@@ -71,6 +71,8 @@ function helpers.scratchpad(match, spawn_cmd, spawn_args)
 	end
 end
 
+-- Change volume
+-- =============================================
 function helpers.volume_control(step)
 	local cmd
 	if step == 0 then
@@ -87,10 +89,9 @@ end
 
 -- Quick markup
 -- =============================================
-helpers.colorize_text = function(text, color)
+function helpers.colorize_text(text, color)
 	return "<span foreground='" .. color .. "'>" .. text .. "</span>"
 end
-
 -- Lighten or darken hex colors
 -- =============================================
 -- Rounds to whole number
@@ -130,7 +131,7 @@ function helpers.lighten(hex_color, amt)
 	local max = math.max(r, g, b)
 	local min = math.min(r, g, b)
 	local c = max - min
-	-----------------------------
+
 	-- Hue
 	local h
 	if c == 0 then
@@ -143,10 +144,10 @@ function helpers.lighten(hex_color, amt)
 		h = ((r - g) / c) + 4
 	end
 	h = h * 60
-	-----------------------------
+
 	-- Luminance
 	local l = (max + min) * 0.5
-	-----------------------------
+
 	-- Saturation
 	local s
 	if l == 0 then
@@ -156,7 +157,7 @@ function helpers.lighten(hex_color, amt)
 	elseif l > 0.5 then
 		s = c / (2 - (l * 2))
 	end
-	-----------------------------
+
 	local H, S, L, A
 	H = round(h) / 360
 	S = round(s * 100) / 100
@@ -214,3 +215,4 @@ function helpers.lighten(hex_color, amt)
 end
 
 return helpers
+-- EOF ------------------------------------------------------------------------
