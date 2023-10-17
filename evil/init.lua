@@ -5,7 +5,8 @@ require("evil.ram")
 -- User controlled
 require("evil.volume")
 require("evil.spotify")
--- require("evil.brightness")
+-- TODO: comment after checking
+require("evil.brightness")
 
 -- Internet access required
 require("evil.weather")

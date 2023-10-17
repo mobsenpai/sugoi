@@ -4,7 +4,7 @@ local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
 
--- notification list
+-- Notification list
 local label = wibox.widget({
 	text = "Notifications",
 	align = "center",
@@ -38,15 +38,15 @@ local notifs_empty = wibox.widget({
 })
 
 local notifs_container = wibox.widget({
-	forced_width = 240,
-	forced_height = 715,
+	forced_width = dpi(240),
+	forced_height = dpi(715),
 	layout = wibox.layout.fixed.vertical,
-	spacing = 10,
+	spacing = dpi(10),
 	spacing_widget = {
-		top = 2,
-		bottom = 2,
-		left = 6,
-		right = 6,
+		top = dpi(2),
+		bottom = dpi(2),
+		left = dpi(6),
+		right = dpi(6),
 		widget = wibox.container.margin,
 		{
 			widget = wibox.container.background,
@@ -78,7 +78,7 @@ local create_notif = function(icon, n, width)
 		widget = wibox.container.constraint,
 		{
 			widget = wibox.container.margin,
-			margins = 20,
+			margins = dpi(20),
 			{
 				widget = wibox.widget.imagebox,
 				image = icon,
@@ -93,22 +93,22 @@ local create_notif = function(icon, n, width)
 		widget = wibox.container.scroll.horizontal,
 		step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,
 		speed = 50,
-		forced_width = 200,
+		forced_width = dpi(200),
 		{
 			widget = wibox.widget.textbox,
 			text = n.title,
 			align = "left",
-			forced_width = 200,
+			forced_width = dpi(200),
 		},
 	})
 
 	local time_widget = wibox.widget({
 		widget = wibox.container.background,
-		bg = beautiful.accent,
-		fg = beautiful.background,
+		bg = beautiful.fg_normal,
+		fg = beautiful.bg_normal,
 		{
 			widget = wibox.container.margin,
-			margins = { left = 10, right = 10, top = 4, bottom = 4 },
+			margins = { left = dpi(10), right = dpi(10), top = dpi(4), bottom = dpi(4) },
 			{
 				widget = wibox.widget.textbox,
 				text = time,
@@ -121,26 +121,26 @@ local create_notif = function(icon, n, width)
 	local text_notif = wibox.widget({
 		markup = n.message,
 		align = "left",
-		forced_width = 165,
+		forced_width = dpi(165),
 		widget = wibox.widget.textbox,
 	})
 
 	local box = wibox.widget({
 		widget = wibox.container.background,
-		forced_height = 120,
-		bg = beautiful.background_alt,
+		forced_height = dpi(120),
+		bg = beautiful.black_alt,
 		{
 			layout = wibox.layout.align.horizontal,
 			icon_widget,
 			{
 				widget = wibox.container.margin,
-				margins = 10,
+				margins = dpi(10),
 				{
 					layout = wibox.layout.align.vertical,
 					expand = "none",
 					{
 						layout = wibox.layout.fixed.vertical,
-						spacing = 10,
+						spacing = dpi(10),
 						{
 							layout = wibox.layout.align.horizontal,
 							expand = "none",
@@ -190,18 +190,18 @@ naughty.connect_signal("request::display", function(n)
 
 	local appicon = n.icon or n.app_icon
 	if not appicon then
-		appicon = beautiful.notification_icon
+		appicon = beautiful.awesome_icon
 	end
 
 	notifs_container:insert(1, create_notif(appicon, n, width))
 end)
 
 local notifs = wibox.widget({
-	spacing = 10,
+	spacing = dpi(10),
 	layout = wibox.layout.fixed.vertical,
 	{
 		widget = wibox.container.margin,
-		margins = 10,
+		margins = dpi(10),
 		{
 			layout = wibox.layout.align.horizontal,
 			label,
@@ -212,18 +212,17 @@ local notifs = wibox.widget({
 	notifs_container,
 })
 
--- main window --
-
+-- Main window
 local main = wibox.widget({
 	widget = wibox.container.background,
-	bg = beautiful.background,
+	bg = beautiful.bg_normal,
 	{
 		widget = wibox.container.margin,
-		margins = 10,
+		margins = dpi(10),
 		{
 			layout = wibox.layout.fixed.vertical,
 			fill_space = true,
-			spacing = 10,
+			spacing = dpi(10),
 			notifs,
 		},
 	},
@@ -233,23 +232,23 @@ local notif_center = awful.popup({
 	visible = false,
 	ontop = true,
 	border_width = beautiful.border_width,
-	border_color = beautiful.border_color_normal,
-	minimum_height = 585,
-	maximum_height = 585,
-	minimum_width = 500,
-	maximum_width = 500,
+	border_color = beautiful.widget_border_color,
+	minimum_height = dpi(585),
+	maximum_height = dpi(585),
+	minimum_width = dpi(500),
+	maximum_width = dpi(500),
 	placement = function(d)
-		awful.placement.bottom_left(d, { honor_workarea = true, margins = 20 + beautiful.border_width * 2 })
+		awful.placement.bottom_right(d, { honor_workarea = true, margins = dpi(5) + beautiful.border_width * 2 })
 	end,
 	widget = main,
 })
 
--- summon functions
+-- Summon functions
 awesome.connect_signal("summon::notif_center", function()
 	notif_center.visible = not notif_center.visible
 end)
 
--- hide on click on other windows
+-- Hide on click on other windows
 client.connect_signal("button::press", function()
 	notif_center.visible = false
 end)
