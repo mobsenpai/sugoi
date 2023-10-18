@@ -54,6 +54,7 @@ _Ofc you can change it._
 - [x] volume & brightness osd
 - [x] clipboard
 - [x] screenshot
+- [x] window switcher
 
 > Check the user variable in `rc.lua` to change the defaults to your apps first. Most important ones are ` terminal` and `app_launcher`.
 
@@ -485,6 +486,7 @@ y-offset: 0px;
 | `super + shift + q` | Quit awesome             |
 | `super + shift + r` | Reload awesome           |
 | `super + q`         | Close selected window    |
+| `alt + tab`         | Switch windows           |
 
 _And **many many** more...._
 

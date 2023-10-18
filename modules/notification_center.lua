@@ -3,6 +3,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 -- Notification list
 local label = wibox.widget({
@@ -229,6 +230,7 @@ local main = wibox.widget({
 })
 
 local notif_center = awful.popup({
+	shape = helpers.rrect(beautiful.border_radius),
 	visible = false,
 	ontop = true,
 	border_width = beautiful.border_width,
@@ -254,5 +256,6 @@ client.connect_signal("button::press", function()
 end)
 
 awesome.connect_signal("summon::dismiss", function()
+	naughty.destroy_all_notifications()
 	notif_center.visible = false
 end)

@@ -200,8 +200,6 @@ theme.menu_bg_focus = theme.bg_focus
 theme.menu_fg_focus = theme.fg_focus
 theme.menu_border_width = theme.widget_border_width
 theme.menu_border_color = theme.widget_border_color
-theme.menu_submenu = ">  "
-theme.menu_submenu_icon = nil
 
 -- Gaps
 -- ===================================================================

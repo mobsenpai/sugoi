@@ -6,7 +6,6 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
-local naughty = require("naughty")
 local helpers = require("helpers")
 local awesome = awesome
 local client = client
@@ -77,7 +76,6 @@ keys.desktopbuttons = gears.table.join(
 	awful.button({}, 1, function()
 		-- Single tap
 		awesome.emit_signal("summon::dismiss")
-		naughty.destroy_all_notifications()
 		if menu.mainmenu then
 			menu.mainmenu:hide()
 		end
@@ -288,11 +286,10 @@ keys.globalkeys = gears.table.join(
 
 	-- Dismiss notifications and elements that connect to the dismiss signal
 	awful.key({ ctrl }, "space", function()
-		-- awesome.emit_signal("elemental::dismiss")
-		naughty.destroy_all_notifications()
+		awesome.emit_signal("summon::dismiss")
 	end, { description = "dismiss notification", group = "notifications" }),
 
-	-- Scratchpad terminal with tmux
+	-- Scratchpad terminal
 	awful.key({ mod }, "s", function()
 		helpers.scratchpad({ instance = "scratchpad" }, user.scratchpad_terminal, nil)
 	end, { description = "scratchpad", group = "launcher" }),
@@ -346,6 +343,17 @@ keys.globalkeys = gears.table.join(
 		awful.spawn("light -U 10")
 		awesome.emit_signal("summon::osd")
 	end, { description = "decrease brightness", group = "brightness" }),
+
+	-- Music
+	awful.key({}, "XF86AudioPlay", function()
+		awful.spawn.with_shell("playerctl play-pause")
+	end, { description = "play pause music", group = "volume" }),
+	awful.key({}, "XF86AudioPrev", function()
+		awful.spawn.with_shell("playerctl previous")
+	end, { description = "previous music", group = "volume" }),
+	awful.key({}, "XF86AudioNext", function()
+		awful.spawn.with_shell("playerctl next")
+	end, { description = "next music", group = "volume" }),
 
 	-- Lockscreen
 	awful.key({ mod, alt }, "l", function()
