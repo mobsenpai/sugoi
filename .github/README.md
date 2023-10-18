@@ -476,15 +476,27 @@ y-offset: 0px;
 
 > Some important keybinds. More in `keys.lua`
 
-| Keybind             | Function                 |
-| ------------------- | ------------------------ |
-| `super + enter`     | Open terminal            |
-| `super + A`         | Open rofi drun           |
-| `super + S`         | Open scratchpad terminal |
-| `super + shift + q` | Quit awesome             |
-| `super + shift + r` | Reload awesome           |
-| `super + q`         | Close selected window    |
-| `alt + tab`         | Switch windows           |
+| Keybind                       | Function                 |
+| ----------------------------- | ------------------------ |
+| `super + enter`               | Open terminal            |
+| `super + A`                   | Open rofi drun           |
+| `super + S`                   | Open scratchpad terminal |
+| `super + shift + q`           | Quit awesome             |
+| `super + shift + r`           | Reload awesome           |
+| `super + q`                   | Close selected window    |
+| `alt + tab`                   | Switch windows           |
+| `prtscrn`                     | Screenshot and sketch    |
+| `shift + prtscrn`             | Screenshot and copy      |
+| `super + space`               | Switch layouts           |
+| `super + f`                   | Fullscreen window        |
+| `super + m`                   | Maximize window          |
+| `super + n`                   | Minimize                 |
+| `super + shift + n`           | Restore minimized        |
+| `super + ctrl + [hjkl]`       | Resize windows           |
+| `super + ctrl + [arrow keys]` | ^                        |
+| `super + ctrl + space`        | Toggle floating          |
+| `super + c`                   | Center floating client   |
+| `super + u`                   | Jump to urgent client    |
 
 _And **many many** more...._
 
