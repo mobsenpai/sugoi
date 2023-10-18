@@ -116,8 +116,6 @@ user = {
 ! white
 *color7: #d5c4a1
 *color15: #fbf1c7
-
-
 ```
 
 > same goes with wezterm. So here is the wezterm's config
