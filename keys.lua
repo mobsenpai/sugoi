@@ -263,17 +263,29 @@ keys.globalkeys = gears.table.join(
 	end, { description = "quit awesome", group = "awesome" }),
 
 	-- Resize focused client or layout factor
-	awful.key({ mod, ctrl }, "j", function()
-		awful.client.incwfact(-0.05)
+	awful.key({ mod, ctrl }, "Down", function(c)
+		helpers.resize_dwim(client.focus, "down")
 	end),
-	awful.key({ mod, ctrl }, "k", function()
-		awful.client.incwfact(0.05)
+	awful.key({ mod, ctrl }, "Up", function(c)
+		helpers.resize_dwim(client.focus, "up")
 	end),
-	awful.key({ mod, ctrl }, "h", function()
-		awful.tag.incmwfact(-0.05)
+	awful.key({ mod, ctrl }, "Left", function(c)
+		helpers.resize_dwim(client.focus, "left")
 	end),
-	awful.key({ mod, ctrl }, "l", function()
-		awful.tag.incmwfact(0.05)
+	awful.key({ mod, ctrl }, "Right", function(c)
+		helpers.resize_dwim(client.focus, "right")
+	end),
+	awful.key({ mod, ctrl }, "j", function(c)
+		helpers.resize_dwim(client.focus, "down")
+	end),
+	awful.key({ mod, ctrl }, "k", function(c)
+		helpers.resize_dwim(client.focus, "up")
+	end),
+	awful.key({ mod, ctrl }, "h", function(c)
+		helpers.resize_dwim(client.focus, "left")
+	end),
+	awful.key({ mod, ctrl }, "l", function(c)
+		helpers.resize_dwim(client.focus, "right")
 	end),
 
 	-- Focus restored client

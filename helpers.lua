@@ -6,7 +6,7 @@ local gears = require("gears")
 local helpers = {}
 
 -- Mouse hover
--- =============================================
+-- ===================================================================
 function helpers.add_hover_cursor(w, hover_cursor)
 	local original_cursor = "left_ptr"
 
@@ -26,7 +26,7 @@ function helpers.add_hover_cursor(w, hover_cursor)
 end
 
 -- Create rounded rectangle shape (in one line)
--- =============================================
+-- ===================================================================
 function helpers.rrect(radius)
 	return function(cr, width, height)
 		gears.shape.rounded_rect(cr, width, height, radius)
@@ -34,7 +34,7 @@ function helpers.rrect(radius)
 end
 
 -- Raise or spawn
--- =============================================
+-- ===================================================================
 function helpers.run_or_raise(match, move, spawn_cmd, spawn_args)
 	local matcher = function(c)
 		return awful.rules.match(c, match)
@@ -61,7 +61,7 @@ function helpers.run_or_raise(match, move, spawn_cmd, spawn_args)
 end
 
 -- Run raise or minimize a client (scratchpad style)
--- =============================================
+-- ===================================================================
 function helpers.scratchpad(match, spawn_cmd, spawn_args)
 	local cf = client.focus
 	if cf and awful.rules.match(cf, match) then
@@ -71,8 +71,39 @@ function helpers.scratchpad(match, spawn_cmd, spawn_args)
 	end
 end
 
+-- Resize DWIM (Do What I Mean)
+-- ===================================================================
+-- Resize client or factor
+-- Constants
+local floating_resize_amount = dpi(20)
+local tiling_resize_factor = 0.05
+---------------
+function helpers.resize_dwim(c, direction)
+	if c and c.floating then
+		if direction == "up" then
+			c:relative_move(0, 0, 0, -floating_resize_amount)
+		elseif direction == "down" then
+			c:relative_move(0, 0, 0, floating_resize_amount)
+		elseif direction == "left" then
+			c:relative_move(0, 0, -floating_resize_amount, 0)
+		elseif direction == "right" then
+			c:relative_move(0, 0, floating_resize_amount, 0)
+		end
+	elseif awful.layout.get(mouse.screen) ~= awful.layout.suit.floating then
+		if direction == "up" then
+			awful.client.incwfact(-tiling_resize_factor)
+		elseif direction == "down" then
+			awful.client.incwfact(tiling_resize_factor)
+		elseif direction == "left" then
+			awful.tag.incmwfact(-tiling_resize_factor)
+		elseif direction == "right" then
+			awful.tag.incmwfact(tiling_resize_factor)
+		end
+	end
+end
+
 -- Change volume
--- =============================================
+-- ===================================================================
 function helpers.volume_control(step)
 	local cmd
 	if step == 0 then
@@ -88,12 +119,13 @@ function helpers.volume_control(step)
 end
 
 -- Quick markup
--- =============================================
+-- ===================================================================
 function helpers.colorize_text(text, color)
 	return "<span foreground='" .. color .. "'>" .. text .. "</span>"
 end
+
 -- Lighten or darken hex colors
--- =============================================
+-- ===================================================================
 -- Rounds to whole number
 local function round(num)
 	return math.floor(num + 0.5)
