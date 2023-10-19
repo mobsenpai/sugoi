@@ -497,6 +497,7 @@ y-offset: 0px;
 | `super + ctrl + space`        | Toggle floating          |
 | `super + c`                   | Center floating client   |
 | `super + u`                   | Jump to urgent client    |
+| `super + alt + l`             | Lock screen              |
 
 _And **many many** more...._
 

@@ -12,6 +12,7 @@ awful.spawn.easy_async_with_shell("stat " .. lua_pam_path .. " >/dev/null 2>&1",
 		local pam = require("liblua_pam")
 		-- lua-pam was installed.
 		-- Authenticate with PAM
+		-- TODO: setup lib-pam
 		lock_screen.authenticate = function(password)
 			return pam.auth_current_user(password)
 		end
