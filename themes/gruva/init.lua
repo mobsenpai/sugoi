@@ -253,14 +253,14 @@ playerctl_widget:buttons(gears.table.join(
 	-- end)
 ))
 
--- Volume widget
+-- Volume bar widget
 -- ===================================================================
 local volume_bar = wibox.widget({
 	max_value = 100,
 	value = 70,
 	forced_width = dpi(100),
-	bar_shape = helpers.rrect(dpi(6)),
 	shape = helpers.rrect(dpi(6)),
+	bar_shape = helpers.rrect(dpi(6)),
 	color = beautiful.bg_focus,
 	background_color = beautiful.light_bg,
 	widget = wibox.widget.progressbar,
@@ -274,6 +274,23 @@ awesome.connect_signal("evil::volume", function(volume, muted)
 	else
 		volume_bar.color = beautiful.bg_focus
 	end
+end)
+
+-- Battery bar widget
+-- ===================================================================
+local battery_bar = wibox.widget({
+	max_value = 100,
+	value = 50,
+	forced_width = dpi(100),
+	shape = helpers.rrect(dpi(6)),
+	bar_shape = helpers.rrect(dpi(6)),
+	color = beautiful.bg_focus,
+	background_color = beautiful.light_bg,
+	widget = wibox.widget.progressbar,
+})
+
+awesome.connect_signal("evil::battery", function(value)
+	battery_bar.value = value
 end)
 
 -- Osd
@@ -556,6 +573,7 @@ awful.screen.connect_for_each_screen(function(s)
 				s.mypromptbox,
 				playerctl_widget,
 				-- volume_bar,
+				-- battery_bar,
 				align = "center",
 				spacing = dpi(10),
 				layout = wibox.layout.fixed.horizontal,

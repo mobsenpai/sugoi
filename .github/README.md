@@ -505,6 +505,10 @@ _And **many many** more...._
 
 If you have read all the above then. It is actually very easy to install you don't need to install any other program to run it. If using my defaults then these programs should be enough (programs names may vary depending on the distro). Ofc you can use what you want, be sure to make the respective changes.
 
+- [x] Software
+
+---
+
 - [ ] awesome-git
 - [ ] wezterm
 - [ ] pipewire pipewire-alsa pipewire-pulse alsa-utils wireplumber
@@ -519,6 +523,17 @@ If you have read all the above then. It is actually very easy to install you don
 - [ ] bottom
 - [ ] ttf-jetbrains-mono-nerd
 - [ ] feh
+- [ ] acpid
+
+- [x] Services
+
+---
+
+```
+# For charger plug/unplug events (if you have a battery)
+sudo systemctl enable acpid.service
+sudo systemctl start acpid.service
+```
 
 > finally just clone the repo to your `~/.config/awesome`
 
@@ -596,10 +611,13 @@ theme.wibar_width = dpi(1920)
 
 > `Clipmenu` is used as clipboard. It needs some configuration, so research on your own, or replace with something else.
 
-> Uncomment this line in `evil/init.lua` to enable brightness osd.
+> Uncomment these lines in `evil/init.lua` to enable specific functions. For battery widget, also uncomment in `themes/gruva/init.lua` in wibar widgets.
+
+> brightness & battery are WIP
 
 ```
 require("evil.brightness")
+require("evil.battery")
 ```
 
 ## 💡 Acknowledgements
