@@ -507,33 +507,30 @@ If you have read all the above then. It is actually very easy to install you don
 
 - [x] Software
 
----
-
-- [ ] awesome-git
-- [ ] wezterm
-- [ ] pipewire pipewire-alsa pipewire-pulse alsa-utils wireplumber
-- [ ] rofi
-- [ ] clipmenu xclip maim slop swappy
-- [ ] inotify-tools light
-- [ ] playerctl
-- [ ] rofi-emoji
-- [ ] bottom
-- [ ] ranger
-- [ ] pcmanfm
-- [ ] bottom
-- [ ] ttf-jetbrains-mono-nerd
-- [ ] feh
-- [ ] acpid
+  - [ ] awesome-git
+  - [ ] wezterm
+  - [ ] pipewire pipewire-alsa pipewire-pulse alsa-utils wireplumber
+  - [ ] rofi
+  - [ ] clipmenu xclip maim slop swappy
+  - [ ] inotify-tools light
+  - [ ] playerctl
+  - [ ] rofi-emoji
+  - [ ] bottom
+  - [ ] ranger
+  - [ ] pcmanfm
+  - [ ] bottom
+  - [ ] ttf-jetbrains-mono-nerd
+  - [ ] feh
+  - [ ] acpid
 
 - [x] Services
 
----
+  - [ ] For charger plug/unplug events (if you have a battery)
 
-```
-# For charger plug/unplug events (if you have a battery)
-sudo systemctl enable acpid.service
-sudo systemctl start acpid.service
-```
+    ```
+    sudo systemctl enable acpid.service
+    sudo systemctl start acpid.service
+    ```
 
 > finally just clone the repo to your `~/.config/awesome`
 
