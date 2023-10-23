@@ -238,7 +238,7 @@ local playerctl_widget = wibox.widget({
 	widget = wibox.container.background,
 })
 
-awesome.connect_signal("evil::spotify", function(artist, title, status)
+awesome.connect_signal("evil::playerctl", function(artist, title, status)
 	playerctl_widget:get_children_by_id("text")[1].markup = title
 end)
 

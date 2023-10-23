@@ -1,5 +1,5 @@
 -- Provides:
--- evil::spotify
+-- evil::playerctl
 --      artist (string)
 --      song (string)
 --      status (string) [playing | paused | stopped]
@@ -12,11 +12,11 @@ local function emit_info(playerctl_output)
 	local status = playerctl_output:match("status_start(.*)"):lower()
 	status = string.gsub(status, "^%s*(.-)%s*$", "%1")
 
-	awesome.emit_signal("evil::spotify", artist, title, status)
+	awesome.emit_signal("evil::playerctl", artist, title, status)
 end
 
--- Sleeps until spotify changes state (pause/play/next/prev)
-local spotify_script = [[
+-- Sleeps until playerctl changes state (pause/play/next/prev)
+local playerctl_script = [[
   sh -c '
     playerctl metadata --format 'artist_start{{artist}}title_start{{title}}status_start{{status}}' --follow
   ']]
@@ -26,7 +26,7 @@ awful.spawn.easy_async_with_shell(
 	"ps x | grep \"playerctl metadata\" | grep -v grep | awk '{print $1}' | xargs kill",
 	function()
 		-- Emit song info with each line printed
-		awful.spawn.with_line_callback(spotify_script, {
+		awful.spawn.with_line_callback(playerctl_script, {
 			stdout = function(line)
 				emit_info(line)
 			end,

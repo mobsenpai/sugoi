@@ -4,7 +4,7 @@ require("evil.ram")
 
 -- User controlled
 require("evil.volume")
-require("evil.spotify")
+require("evil.playerctl")
 -- require("evil.brightness")
 -- require("evil.battery")
 
