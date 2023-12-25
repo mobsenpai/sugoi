@@ -33,7 +33,7 @@ AwesomeWM is the most powerful and highly configurable next-generation framework
 | Compositor      | Picom (dccsillag's fork)                                                                                           |
 | Fonts           | JetBrainsMono Nerd Font                                                                                            |
 | File manager    | Pcmanfm                                                                                                            |
-| Browser         | Vivaldi                                                                                                            |
+| Browser         | Firefox                                                                                                            |
 | Shell           | Bash                                                                                                               |
 | Editor          | Helix                                                                                                              |
 | GUI Editor      | Vscodium                                                                                                           |
