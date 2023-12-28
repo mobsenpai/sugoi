@@ -18,7 +18,7 @@ user = {
 	browser = "firefox",
 	file_manager = "pcmanfm",
 	term_filemanager = "",
-	visual_editor = "codium",
+	visual_editor = "",
 	openweathermap_key = "d1b3b6a81db867259446b0863d5f9108",
 	openweathermap_city_id = {
 		"25.6", -- lat
