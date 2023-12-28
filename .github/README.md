@@ -36,7 +36,6 @@ AwesomeWM is the most powerful and highly configurable next-generation framework
 | Browser         | Firefox                                                                                                            |
 | Shell           | Bash                                                                                                               |
 | Editor          | Helix                                                                                                              |
-| GUI Editor      | Vscodium                                                                                                           |
 | Wallpaper       | [海島千本](https://www.pixiv.net/en/users/18362) / [🗝️𝐆𝐞𝐧𝐞𝐫𝐚𝐥 𝐒𝐭𝐨𝐫𝐞🛋️](https://www.pixiv.net/en/artworks/89143248) |
 
 _Ofc you can change it._
