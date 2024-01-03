@@ -514,12 +514,10 @@ If you have read all the above then. It is actually very easy to install you don
   - [ ] inotify-tools light
   - [ ] playerctl
   - [ ] rofi-emoji
-  - [ ] bottom
-  - [ ] ranger
+  - [ ] yazi
   - [ ] pcmanfm
   - [ ] bottom
   - [ ] ttf-jetbrains-mono-nerd
-  - [ ] feh
   - [ ] acpid
 
 - [x] Services

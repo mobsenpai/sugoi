@@ -17,7 +17,7 @@ user = {
 	editor = "wezterm start --class editor -e hx",
 	browser = "firefox",
 	file_manager = "pcmanfm",
-	term_filemanager = "",
+	term_filemanager = "wezterm start --class term_filemanager -e yazi",
 	visual_editor = "",
 	openweathermap_key = "d1b3b6a81db867259446b0863d5f9108",
 	openweathermap_city_id = {
@@ -76,7 +76,7 @@ apps = {
 		helpers.run_or_raise({ instance = "editor" }, false, user.editor, { switchtotag = true })
 	end,
 	visual_editor = function()
-		helpers.run_or_raise({ class = "VSCodium" }, false, user.visual_editor, { switchtotag = true })
+		helpers.run_or_raise({ class = "" }, false, user.visual_editor, { switchtotag = true })
 	end,
 	volume = function()
 		helpers.run_or_raise({ class = "Pavucontrol" }, true, "pavucontrol")
@@ -163,10 +163,10 @@ local function set_wallpaper(s)
 		end
 
 		-- >> Method 1: Built in wallpaper function
-		-- gears.wallpaper.maximized(wallpaper, s, true)
+		gears.wallpaper.maximized(wallpaper, s, true)
 
 		-- >> Method 2: Set theme's wallpaper with feh
-		awful.spawn.with_shell("feh --bg-fill " .. wallpaper)
+		-- awful.spawn.with_shell("feh --bg-fill " .. wallpaper)
 
 		-- >> Method 3: Set last wallpaper with feh
 		-- awful.spawn.with_shell(os.getenv("HOME") .. "/.fehbg")
